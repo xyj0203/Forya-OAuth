@@ -154,7 +154,7 @@ public class OAuth2Client extends BaseClient{
         if (null == redirectUri) {
             throw new OAuthClientException("Invalid state retired: " + state);
         }
-
+        return null;
     }
 
     public String getClientId() {

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.cfg.MapperConfig;
 import com.fasterxml.jackson.databind.introspect.AnnotatedField;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
 import com.fasterxml.jackson.databind.introspect.AnnotatedParameter;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -64,7 +65,7 @@ public class JacksonJsonMapper implements JsonMapper{
                                     if (i > 0 || c != '-') {
                                         if (Character.isUpperCase(c)) {
                                             if (!wasPrevTranslated && resultLength > 0
-                                            && result.charAt(resultLength - 1) != '-') {
+                                                    && result.charAt(resultLength - 1) != '-') {
                                                 result.append("-");
                                                 resultLength++;
                                             }
