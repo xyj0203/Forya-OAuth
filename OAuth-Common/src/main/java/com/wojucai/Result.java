@@ -23,11 +23,21 @@ public class Result {
     /**
      * 带数据的返回结果集
      * @param object
+     * @return
+     */
+    public static Result success(Object object) {
+        Result result = new Result(ResultEnum.RequestSuccess.code, ResultEnum.RequestSuccess.message, object);
+        return result;
+    }
+
+    /**
+     * 带数据的返回结果集
+     * @param object
      * @param resultEnum
      * @return
      */
     public static Result success(Object object, ResultEnum resultEnum) {
-        Result result = new Result(resultEnum.code, resultEnum.message, object);
+        Result result = new Result(resultEnum.code, "请求成功！", object);
         return result;
     }
 
@@ -49,6 +59,11 @@ public class Result {
      */
     public static Result fail(Object object, ResultEnum resultEnum) {
         Result result = new Result(resultEnum.code, resultEnum.message, object);
+        return result;
+    }
+
+    public static Result fail() {
+        Result result = new Result(ResultEnum.RequestFail.code, ResultEnum.RequestFail.message, null);
         return result;
     }
 

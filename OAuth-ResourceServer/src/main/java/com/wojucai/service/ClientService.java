@@ -1,6 +1,8 @@
 package com.wojucai.service;
 
 import com.wojucai.entity.Client;
+import com.wojucai.entity.reqParam.ClientQuery;
+import com.wojucai.entity.vo.ClientVo;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -14,7 +16,7 @@ public interface ClientService {
      * @param pageSize 条数
      * @return 结果集
      */
-    Page<Client> queryByClientName(String clientName, Integer pageNow, Integer pageSize);
+    Page<ClientVo> queryByClientName(String clientName, Integer pageNow, Integer pageSize);
 
     /**
      * 客户端名称模糊查询
@@ -24,7 +26,7 @@ public interface ClientService {
      * @param sort 排序方式
      * @return 结果集
      */
-    Page<Client> queryByClientName(String clientName, String sort, Integer pageNow, Integer pageSize);
+    Page<ClientVo> queryByClientName(String clientName, String sort, Integer pageNow, Integer pageSize);
 
     /**
      * 通过id删除
@@ -53,4 +55,11 @@ public interface ClientService {
      * @return 返回删除的列表
      */
     void batchDelete(List<Integer> ids);
+
+    /**
+     * 根据id查询
+     * @param clientQuery
+     * @return
+     */
+    Page<ClientVo> queryById(ClientQuery clientQuery);
 }

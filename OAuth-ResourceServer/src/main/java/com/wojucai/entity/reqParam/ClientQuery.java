@@ -1,5 +1,10 @@
 package com.wojucai.entity.reqParam;
 
+import com.wojucai.entity.validate.CheckId;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 /**
  * @description:
  * @author: xuyujie
@@ -14,11 +19,13 @@ public class ClientQuery extends PageQuery{
     /**
      * 客户端名称
      */
+    @NotBlank(message = "名称不能为空")
     private String clientName;
 
     /**
      * 客户端id;
      */
+    @NotNull(message = "id不能为空",groups = {CheckId.class})
     private Integer id;
 
     public String getClientName() {

@@ -2,13 +2,14 @@ package com.wojucai.service.impl;
 
 import com.wojucai.dao.ClientRepository;
 import com.wojucai.entity.Client;
+import com.wojucai.entity.reqParam.ClientQuery;
 import com.wojucai.service.ClientService;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-
+import com.wojucai.entity.vo.ClientVo;
 import static com.wojucai.entity.codeEnum.ParamConstants.ASC;
 
 /**
@@ -23,12 +24,12 @@ public class ClientServiceImpl implements ClientService {
     private ClientRepository clientRepository;
 
     @Override
-    public Page<Client> queryByClientName(String clientName, Integer pageNow, Integer pageSize) {
+    public Page<ClientVo> queryByClientName(String clientName, Integer pageNow, Integer pageSize) {
         return queryByClientName(clientName, "ASC", pageNow, pageSize);
     }
 
     @Override
-    public Page<Client> queryByClientName(String clientName, String sort, Integer pageNow, Integer pageSize) {
+    public Page<ClientVo> queryByClientName(String clientName, String sort, Integer pageNow, Integer pageSize) {
         //创建分页
         Sort sortOp = Sort.by(sort.equals("ASC")?Sort.Order.asc("clientName"):Sort.Order.desc("clientName"));
         Pageable page = PageRequest.of(pageNow, pageSize, sortOp);
@@ -36,12 +37,12 @@ public class ClientServiceImpl implements ClientService {
                 .withIgnorePaths("id")
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
                 .withIgnoreCase(true);
-        Client client = new Client();
+        ClientVo client = new ClientVo();
         client.setClientName(clientName);
         //使用client对象和matcher对象创建Example对象
-        Example<Client> clientExample = Example.of(client, matcher);
-        Page<Client> pageList = clientRepository.findAll(clientExample, page);
-        return pageList;
+        Example<ClientVo> clientExample = Example.of(client, matcher);
+//        Page<ClientVo> pageList = clientRepository.findAll(clientExample, page);
+        return null;
     }
 
     @Override
@@ -62,5 +63,10 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void batchDelete(List<Integer> ids) {
         clientRepository.deleteAllByIdInBatch(ids);
+    }
+
+    @Override
+    public Page<ClientVo> queryById(ClientQuery clientQuery) {
+        return null;
     }
 }
