@@ -40,6 +40,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Result exceptionHandler(NullPointerException e){
         log.error("发生空指针异常！原因是:",e);
+        e.printStackTrace();
         return Result.fail(BODY_NOT_MATCH);
     }
 
@@ -69,6 +70,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Result exceptionHandler(Exception e){
         log.error("未知异常！原因是:",e);
+        e.printStackTrace();
         return Result.fail(INTERNAL_SERVER_ERROR);
     }
 }

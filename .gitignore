@@ -3,3 +3,4 @@
 /OAuth-ResourceServer/target/
 /.idea
 /oauth-vue/node_modules
+/logs

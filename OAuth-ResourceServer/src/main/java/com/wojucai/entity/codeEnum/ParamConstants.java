@@ -9,7 +9,7 @@ public class ParamConstants {
     /**
      * 当前页
      */
-    public static final int PAGE_NOW = 1;
+    public static final int PAGE_NOW = 0;
 
     /**
      * 条数

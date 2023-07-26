@@ -1,6 +1,7 @@
 package com.wojucai.entity.reqParam;
 
 import com.wojucai.entity.validate.CheckId;
+import com.wojucai.entity.validate.CheckString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -19,7 +20,7 @@ public class ClientQuery extends PageQuery{
     /**
      * 客户端名称
      */
-    @NotBlank(message = "名称不能为空")
+    @NotBlank(message = "名称不能为空", groups = {CheckString.class})
     private String clientName;
 
     /**

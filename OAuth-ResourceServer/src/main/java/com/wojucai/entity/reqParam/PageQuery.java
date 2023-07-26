@@ -49,7 +49,7 @@ public abstract class PageQuery {
     }
 
     private void verifyPageNow(Integer pageNow) {
-        if (pageNow == null || pageNow < 0) {
+        if (pageNow == null || pageNow < 1) {
             this.pageNow = PAGE_NOW;
         } else {
             this.pageNow = pageNow;

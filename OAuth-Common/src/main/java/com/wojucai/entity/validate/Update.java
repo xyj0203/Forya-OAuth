@@ -5,5 +5,5 @@ package com.wojucai.entity.validate;
  * @author: xuyujie
  * @date: 2023/07/25
  **/
-public class Update {
+public interface Update {
 }

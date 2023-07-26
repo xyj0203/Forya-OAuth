@@ -34,3 +34,10 @@ server:
   port: 10085
   servlet:
     context-path: /api
+#  指定日志级别 把springboot的所有日志修改成为debug
+logging:
+  level:
+    root: info
+  config: classpath:logback.xml
+  file:
+    path: logs

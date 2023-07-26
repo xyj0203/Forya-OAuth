@@ -2,7 +2,9 @@ package com.wojucai.entity.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wojucai.entity.validate.Update;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -12,6 +14,8 @@ import java.util.List;
  * @date: 2023/07/25
  **/
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ClientVo {
     /**
      * 自增主键
