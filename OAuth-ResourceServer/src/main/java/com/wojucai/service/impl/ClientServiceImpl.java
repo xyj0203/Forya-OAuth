@@ -4,11 +4,14 @@ import com.wojucai.dao.ClientRepository;
 import com.wojucai.entity.Client;
 import com.wojucai.entity.reqParam.ClientQuery;
 import com.wojucai.service.ClientService;
+import com.wojucai.util.converter.ClientConverter;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
+
 import com.wojucai.entity.vo.ClientVo;
 import static com.wojucai.entity.codeEnum.ParamConstants.ASC;
 
@@ -37,12 +40,15 @@ public class ClientServiceImpl implements ClientService {
                 .withIgnorePaths("id")
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
                 .withIgnoreCase(true);
-        ClientVo client = new ClientVo();
+        Client client = new Client();
         client.setClientName(clientName);
         //使用client对象和matcher对象创建Example对象
-        Example<ClientVo> clientExample = Example.of(client, matcher);
-//        Page<ClientVo> pageList = clientRepository.findAll(clientExample, page);
-        return null;
+        Example<Client> clientExample = Example.of(client, matcher);
+        // 查询到的对象
+        Page<Client> pageList = clientRepository.findAll(clientExample, page);
+        // 将Client转换为ClientVo
+        Page<ClientVo> returnPage = pageList.map(new ClientConverter());
+        return returnPage;
     }
 
     @Override
