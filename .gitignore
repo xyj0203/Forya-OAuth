@@ -2,3 +2,4 @@
 /OAuth-Common/target/
 /OAuth-ResourceServer/target/
 /.idea
+/oauth-vue/node_modules
