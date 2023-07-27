@@ -1,11 +1,14 @@
 package com.wojucai.service.impl;
 
+import com.wojucai.dao.UserRepository;
 import com.wojucai.entity.po.User;
 import com.wojucai.entity.reqParam.UserQuery;
-import com.wojucai.entity.vo.ClientVo;
+import com.wojucai.entity.vo.UserVo;
 import com.wojucai.service.UserService;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -16,18 +19,36 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Override
-    public void batchDelete(List<Integer> ids) {
-
-    }
+    @Resource
+    private UserRepository userRepository;
 
     @Override
-    public List<User> queryUserByName() {
-        return null;
+    public void batchDelete(List<Long> ids) {
+        userRepository.deleteAllById(ids);
     }
 
     @Override
     public UserVo queryById(UserQuery userQuery) {
         return null;
+    }
+
+    @Override
+    public Page<UserVo> queryByUsername(UserQuery userQuery) {
+        return null;
+    }
+
+    @Override
+    public User insertUser(User user) {
+        return null;
+    }
+
+    @Override
+    public User updateUser(User user) {
+        return null;
+    }
+
+    @Override
+    public int deleteById(Long id) {
+        return 0;
     }
 }

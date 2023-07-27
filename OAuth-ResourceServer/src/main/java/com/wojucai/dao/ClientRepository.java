@@ -17,7 +17,7 @@ public interface ClientRepository extends JpaRepository<Client, Integer> {
      * @param id 客户端id
      * @return 返回是否删除成功
      */
-    int deleteByClientId(Integer id);
+    int deleteByClientId(Long id);
 
 
 }

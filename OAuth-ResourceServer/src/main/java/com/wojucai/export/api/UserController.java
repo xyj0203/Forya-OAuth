@@ -38,38 +38,36 @@ public class UserController {
     @ApiOperation("通过用户账号查询")
     @GetMapping("/queryUserByName")
     public Result queryUserByName(@Validated(value = CheckString.class) @RequestBody UserQuery userQuery) {
-        Page<UserVo> Users = UserService.queryByUsername(UserQuery.getUsername(),
-                UserQuery.getPageNow(), UserQuery.getPageNumber());
+        Page<UserVo> Users = userService.queryByUsername(userQuery);
         return Users != null ? Result.success(Users, ResultEnum.RequestSuccess) : Result.fail();
     }
 
     @ApiOperation("添加用户")
     @PostMapping("/insertUser")
-    public Result insertUser(@Validated @RequestBody User User) {
-        System.out.println(User);
-        return UserService.insertUser(User) == null ?
+    public Result insertUser(@Validated @RequestBody User user) {
+        return userService.insertUser(user) == null ?
                 Result.fail(ResultEnum.ParamsIllegal) : Result.success(ResultEnum.RequestSuccess);
     }
 
     @ApiOperation("更新用户信息")
     @PostMapping("/updateUser")
     public Result updateUser(@Validated(value = {Update.class}) @RequestBody User User) {
-        return UserService.updateUser(User) == null ?
+        return userService.updateUser(User) == null ?
                 Result.success(ResultEnum.RequestSuccess) : Result.fail(ResultEnum.RequestFail);
     }
 
     @ApiOperation("通过Id删除用户信息")
     @DeleteMapping("deleteById/{id}")
-    public Result deleteById(@PathVariable("id") @NotNull(message = "id不能为空") Integer id) {
-        return UserService.deleteById(id) == 1 ?
+    public Result deleteById(@PathVariable("id") @NotNull(message = "id不能为空") Long id) {
+        return userService.deleteById(id) == 1 ?
                 Result.success(ResultEnum.RequestSuccess) : Result.fail(ResultEnum.RequestFail);
     }
 
     @ApiOperation("批量删除用户信息")
     @DeleteMapping("deleteByIds")
-    public Result deleteByIds(@Validated @NotNull(message = "客户端Id不能为空") List<Integer> ids) {
+    public Result deleteByIds(@Validated @NotNull(message = "客户端Id不能为空") List<Long> ids) {
         try {
-            UserService.batchDelete(ids);
+            userService.batchDelete(ids);
         } catch (Exception e) {
             log.info("批量删除失败！！！");
             return Result.fail(ResultEnum.RequestFail);

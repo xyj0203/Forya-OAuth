@@ -6,15 +6,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.URL;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 /**
  * @description:客户端类
@@ -26,7 +29,7 @@ import java.sql.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "tb_client")
-public class Client {
+public class Client extends BaseEntity{
 
     /**
      * 自增主键
@@ -77,14 +80,4 @@ public class Client {
     @NotNull(message = "启用不能为空")
     @Range(max = 1, min = 0, message = "启用不合法")
     private Integer enable = 1;
-
-    /**
-     * 插入时间
-     */
-    private Date insertTime;
-
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
 }

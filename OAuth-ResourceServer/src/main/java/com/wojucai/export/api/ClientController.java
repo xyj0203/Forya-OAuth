@@ -11,7 +11,6 @@ import com.wojucai.enums.ResultEnum;
 import com.wojucai.service.ClientService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -60,7 +59,7 @@ public class ClientController {
 
     @ApiOperation("通过Id删除客户端信息")
     @DeleteMapping("deleteById/{id}")
-    public Result deleteById(@PathVariable("id") @NotNull(message = "id不能为空") Integer id) {
+    public Result deleteById(@PathVariable("id") @NotNull(message = "id不能为空") Long id) {
         return clientService.deleteById(id) == 1 ?
                 Result.success(ResultEnum.RequestSuccess) : Result.fail(ResultEnum.RequestFail);
     }

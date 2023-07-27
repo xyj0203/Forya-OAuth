@@ -50,14 +50,13 @@ public class ClientServiceImpl implements ClientService {
         Example<Client> clientExample = Example.of(client, matcher);
         // 查询到的对象
         Page<Client> pageList = clientRepository.findAll(clientExample, page);
-        log.info("1111");
         // 将Client转换为ClientVo
         Page<ClientVo> returnPage = pageList.map(clientConverter);
         return returnPage;
     }
 
     @Override
-    public int deleteById(Integer id) {
+    public int deleteById(Long id) {
         return clientRepository.deleteByClientId(id);
     }
 

@@ -33,7 +33,7 @@ public interface ClientService {
      * @param id id
      * @return 返回 1 成功 0 失败
      */
-    int deleteById(Integer id);
+    int deleteById(Long id);
 
     /**
      * 增加客户端
