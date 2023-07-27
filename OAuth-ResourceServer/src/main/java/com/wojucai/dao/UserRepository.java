@@ -1,6 +1,6 @@
 package com.wojucai.dao;
 
-import com.wojucai.entity.User;
+import com.wojucai.entity.po.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

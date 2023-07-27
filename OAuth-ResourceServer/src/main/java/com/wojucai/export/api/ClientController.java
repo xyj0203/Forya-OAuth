@@ -1,10 +1,7 @@
 package com.wojucai.export.api;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.wojucai.Result;
-import com.wojucai.dao.ClientRepository;
-import com.wojucai.entity.Client;
+import com.wojucai.entity.po.Client;
 import com.wojucai.entity.reqParam.ClientQuery;
 import com.wojucai.entity.validate.CheckId;
 import com.wojucai.entity.validate.CheckString;
@@ -16,18 +13,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.extern.slf4j.Slf4j;
-import org.omg.CORBA.PRIVATE_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
-
-import static com.wojucai.util.ParamsVerify.*;
 
 /**
  * @description: 客户端控制类

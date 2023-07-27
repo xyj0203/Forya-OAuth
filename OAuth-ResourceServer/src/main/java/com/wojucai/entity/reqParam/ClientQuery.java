@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
- * @description:
+ * @description: 客户端查询参数封装
  * @author: xuyujie
  * @date: 2023/06/11
  **/

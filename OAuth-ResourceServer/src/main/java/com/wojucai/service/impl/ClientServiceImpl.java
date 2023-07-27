@@ -1,9 +1,10 @@
 package com.wojucai.service.impl;
 
 import com.wojucai.dao.ClientRepository;
-import com.wojucai.entity.Client;
+import com.wojucai.entity.po.Client;
 import com.wojucai.entity.reqParam.ClientQuery;
 import com.wojucai.service.ClientService;
+import com.wojucai.util.converter.ClientConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.*;
@@ -12,10 +13,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import com.wojucai.entity.vo.ClientVo;
-import static com.wojucai.entity.codeEnum.ParamConstants.ASC;
 
 /**
  * @description:客户端服务实现类
@@ -28,6 +27,8 @@ public class ClientServiceImpl implements ClientService {
 
     @Resource
     private ClientRepository clientRepository;
+    @Resource
+    private ClientConverter clientConverter;
 
     @Override
     public Page<ClientVo> queryByClientName(String clientName, Integer pageNow, Integer pageSize) {
@@ -51,15 +52,7 @@ public class ClientServiceImpl implements ClientService {
         Page<Client> pageList = clientRepository.findAll(clientExample, page);
         log.info("1111");
         // 将Client转换为ClientVo
-        Page<ClientVo> returnPage = pageList.map(x -> {
-            ClientVo clientVo = new ClientVo();
-            BeanUtils.copyProperties(x,clientVo);
-            String scope = x.getScope();
-            if (scope != null) {
-                clientVo.setScope(stringParseList(scope));
-            }
-            return clientVo;
-        });
+        Page<ClientVo> returnPage = pageList.map(clientConverter);
         return returnPage;
     }
 
@@ -88,8 +81,5 @@ public class ClientServiceImpl implements ClientService {
         return null;
     }
 
-    private List<String> stringParseList(String listStr) {
-        listStr = listStr.replaceAll("[\\[\\](){}]","");
-        return Arrays.asList(listStr.split(","));
-    }
+
 }

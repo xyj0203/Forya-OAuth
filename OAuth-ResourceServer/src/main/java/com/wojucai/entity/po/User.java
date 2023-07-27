@@ -1,4 +1,4 @@
-package com.wojucai.entity;
+package com.wojucai.entity.po;
 
 import lombok.*;
 
@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.sql.Date;
 
 /**
  * @description:用户实体类
@@ -43,7 +44,7 @@ public class User {
     /**
      * 性别
      */
-    private String sex;
+    private Integer sex;
 
     /**
      * 年龄
@@ -54,4 +55,19 @@ public class User {
      * 描述
      */
     private String description;
+
+    /**
+     * 插入时间
+     */
+    private Date insertTime;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
+
+    /**
+     * 角色
+     */
+    private Integer role;
 }

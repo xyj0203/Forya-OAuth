@@ -1,6 +1,6 @@
 package com.wojucai.service;
 
-import com.wojucai.entity.Client;
+import com.wojucai.entity.po.Client;
 import com.wojucai.entity.reqParam.ClientQuery;
 import com.wojucai.entity.vo.ClientVo;
 import org.springframework.data.domain.Page;

@@ -1,4 +1,4 @@
-package com.wojucai.entity;
+package com.wojucai.entity.po;
 
 import com.wojucai.entity.validate.Update;
 import lombok.AllArgsConstructor;
@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.sql.Date;
 
 /**
  * @description:客户端类
@@ -76,4 +77,14 @@ public class Client {
     @NotNull(message = "启用不能为空")
     @Range(max = 1, min = 0, message = "启用不合法")
     private Integer enable = 1;
+
+    /**
+     * 插入时间
+     */
+    private Date insertTime;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
 }
