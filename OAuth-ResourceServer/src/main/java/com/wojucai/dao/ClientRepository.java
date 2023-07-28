@@ -12,12 +12,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Integer> {
 
-    /**
-     * 删除
-     * @param id 客户端id
-     * @return 返回是否删除成功
-     */
-    int deleteByClientId(Long id);
-
-
 }

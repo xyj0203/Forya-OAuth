@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import com.wojucai.entity.vo.ClientVo;
 
@@ -31,8 +32,8 @@ public class ClientServiceImpl implements ClientService {
     private ClientConverter clientConverter;
 
     @Override
-    public Page<ClientVo> queryByClientName(String clientName, Integer pageNow, Integer pageSize) {
-        return queryByClientName(clientName, "ASC", pageNow, pageSize);
+    public Page<ClientVo> queryByClientName(ClientQuery clientQuery) {
+        return queryByClientName(clientQuery.getClientName(), clientQuery.getSort(), clientQuery.getPageNow(), clientQuery.getPageNumber());
     }
 
     @Override
@@ -56,8 +57,8 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public int deleteById(Long id) {
-        return clientRepository.deleteByClientId(id);
+    public void deleteById(Integer id) {
+        clientRepository.deleteById(id);
     }
 
     @Override
@@ -76,7 +77,15 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Page<ClientVo> queryById(ClientQuery clientQuery) {
+    public ClientVo queryById(ClientQuery clientQuery) {
+        Optional<Client> optionalClient = clientRepository.findById(clientQuery.getId());
+        ClientVo clientVo = optionalClient.map(clientConverter).orElse(null);
+        return clientVo;
+    }
+
+    @Override
+    public Page<ClientVo> queryAll(ClientQuery clientQuery) {
+
         return null;
     }
 

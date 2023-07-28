@@ -52,7 +52,7 @@ public abstract class PageQuery {
         if (pageNow == null || pageNow < 1) {
             this.pageNow = PAGE_NOW;
         } else {
-            this.pageNow = pageNow;
+            this.pageNow = pageNow - 1;
         }
     }
 

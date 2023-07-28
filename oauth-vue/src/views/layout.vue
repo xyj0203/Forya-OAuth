@@ -1,18 +1,24 @@
 <template>
-  <el-container style="height: 500px; border: 1px solid #eee">
+  <el-container style="height: 100%; border: 1px solid #eee">
   <el-aside width="200px">
     <div class="logo">
       <img src="../assets/logo.png"/>
       <span>OAuth2.0</span>
     </div>
     <el-menu >
+      <router-link to="/index">
+        <el-menu-item>
+          <i class="el-icon-s-platform"></i>
+          <span>首页</span>
+        </el-menu-item>
+      </router-link>
       <router-link to="/user">
         <el-menu-item>
         <i class="el-icon-user"></i>
         <span>用户管理</span>
       </el-menu-item>
       </router-link>
-      <router-link to="/scope">
+      <router-link to="/client">
         <el-menu-item>
         <i class="el-icon-s-custom"></i>
         <span>客户端管理</span>

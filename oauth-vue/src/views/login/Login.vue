@@ -65,7 +65,7 @@ export default {
       console.log(data)
       if (data.code === 10000) {
         if (data.object.roleName === 'ADMIN') {
-          this.$router.push('/user')
+          this.$router.push('/index')
         } else {
           this.$router.push('/checkScope')
         }

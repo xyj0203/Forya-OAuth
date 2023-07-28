@@ -6,6 +6,7 @@ import com.wojucai.entity.codeEnum.ResultEnum;
 import com.wojucai.entity.req.LoginReq;
 import com.wojucai.entity.req.OAuthReq;
 import com.wojucai.service.OauthService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ import java.security.InvalidKeyException;
  * @date: 2023/05/26
  **/
 @Controller
+@Api(tags = "Controller-Oauth")
 public class OauthController {
 
     @Autowired

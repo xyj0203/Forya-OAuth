@@ -24,17 +24,24 @@ request.interceptors.response.use(response => {
   return response
 }, error => {
 // Do something with response error
-  console.log(error)
   if (error.response.data.code === 401) {
     // token过期
     store.commit('user/del')
     router.push('/login')
   } else {
-    Message({
-      showClose: true,
-      message: error.response.data.message,
-      type: 'error'
-    })
+    if (error.response.status === 500) {
+      Message({
+        showClose: true,
+        message: '服务器繁忙',
+        type: 'error'
+      })
+    } else {
+      Message({
+        showClose: true,
+        message: error.response.data.message,
+        type: 'error'
+      })
+    }
   }
   return Promise.reject(error)
 })

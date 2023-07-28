@@ -1,21 +1,22 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '@/views/login/Login'
+import login from '@/views/login/login'
 import checkScope from '@/views/checkScope/checkScope'
 import layout from '@/views/layout'
-import scope from '@/views/layout/layoutScope'
+import client from '@/views/layout/layoutClient'
 import user from '@/views/layout/layoutUser'
+import index from '@/views/layout/layoutIndex'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    component: Login
+    component: login
   },
   {
     path: '/login',
-    component: Login
+    component: login
   }, {
     path: '/checkScope',
     component: checkScope
@@ -24,11 +25,15 @@ const routes = [
     component: layout,
     children: [
       {
+        path: '/index',
+        component: index
+      },
+      {
         path: 'user',
         component: user
       }, {
-        path: 'scope',
-        component: scope
+        path: 'client',
+        component: client
       }
     ]
   }]

@@ -19,7 +19,7 @@ public class UserQuery extends PageQuery{
      * id
      */
     @NotNull(message = "id不能为空", groups = {CheckId.class})
-    private Integer id;
+    private Long id;
 
     /**
      * 用户名
@@ -27,11 +27,11 @@ public class UserQuery extends PageQuery{
     @NotBlank(message = "用户名不能为空", groups = {CheckString.class})
     private String username;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

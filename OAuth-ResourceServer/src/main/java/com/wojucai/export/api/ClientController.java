@@ -36,9 +36,8 @@ public class ClientController {
 
     @ApiOperation("通过客户端名称查询")
     @GetMapping("/queryClientByName")
-    public Result queryClientByName(@Validated(value = CheckString.class) @RequestBody ClientQuery clientQuery) {
-        Page<ClientVo> clients = clientService.queryByClientName(clientQuery.getClientName(),
-                clientQuery.getPageNow(), clientQuery.getPageNumber());
+    public Result queryClientByName(@Validated(value = CheckString.class)  ClientQuery clientQuery) {
+        Page<ClientVo> clients = clientService.queryByClientName(clientQuery);
         return clients != null ? Result.success(clients, ResultEnum.RequestSuccess) : Result.fail();
     }
 
@@ -51,22 +50,22 @@ public class ClientController {
     }
 
     @ApiOperation("更新客户端信息")
-    @PostMapping("/updateClient")
+    @PutMapping("/updateClient")
     public Result updateClient(@Validated(value = {Update.class}) @RequestBody Client client) {
-        return clientService.updateClient(client) == null ?
+        return clientService.updateClient(client) != null ?
                 Result.success(ResultEnum.RequestSuccess) : Result.fail(ResultEnum.RequestFail);
     }
 
     @ApiOperation("通过Id删除客户端信息")
     @DeleteMapping("deleteById/{id}")
-    public Result deleteById(@PathVariable("id") @NotNull(message = "id不能为空") Long id) {
-        return clientService.deleteById(id) == 1 ?
-                Result.success(ResultEnum.RequestSuccess) : Result.fail(ResultEnum.RequestFail);
+    public Result deleteById(@PathVariable("id") @NotNull(message = "id不能为空") Integer id) {
+        clientService.deleteById(id);
+        return Result.success(ResultEnum.RequestSuccess);
     }
 
     @ApiOperation("批量删除客户端信息")
     @DeleteMapping("deleteByIds")
-    public Result deleteByIds(@Validated @NotNull(message = "客户端Id不能为空") List<Integer> ids) {
+    public Result deleteByIds(@Validated @NotNull(message = "客户端Id不能为空")@RequestBody List<Integer> ids) {
         try {
             clientService.batchDelete(ids);
         } catch (Exception e) {
@@ -77,9 +76,16 @@ public class ClientController {
     }
 
     @ApiOperation("通过id查询")
-    @GetMapping("queryById/{id}")
-    public Result queryById(@Validated(value = CheckId.class) @RequestBody ClientQuery clientQuery) {
-        Page<ClientVo> page = clientService.queryById(clientQuery);
-        return  page != null ? Result.success(page) : Result.fail();
+    @GetMapping("queryById")
+    public Result queryById(@Validated(value = CheckId.class)  ClientQuery clientQuery) {
+        ClientVo clientVo = clientService.queryById(clientQuery);
+        return  clientVo != null ? Result.success(clientVo) : Result.fail("用户不存在");
+    }
+
+    @ApiOperation("查询所有")
+    @GetMapping("queryAll")
+    public Result queryAll(ClientQuery clientQuery) {
+        Page<ClientVo> clientVos = clientService.queryAll(clientQuery);
+        return clientVos != null ? Result.success(clientVos) : Result.fail("数据为空");
     }
 }

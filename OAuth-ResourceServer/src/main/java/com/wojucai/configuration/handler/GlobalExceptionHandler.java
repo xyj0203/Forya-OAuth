@@ -70,7 +70,6 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Result exceptionHandler(Exception e){
         log.error("未知异常！原因是:",e);
-        e.printStackTrace();
         return Result.fail(INTERNAL_SERVER_ERROR);
     }
 }

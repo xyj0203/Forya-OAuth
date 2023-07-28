@@ -20,8 +20,11 @@ spring:
       allow_unquoted_control_chars: true
       allow_single_quotes: true
     property-naming-strategy: LOWER_CAMEL_CASE
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 server:
-  port: 10086
+  port: 8081
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
@@ -35,8 +38,5 @@ mybatis-plus:
 encode:
   secret:
     $adhajkshdgghjds
-serverMetaData:
-
-
-
-
+feign:
+  resource-server-url: http://localhost:8082/api

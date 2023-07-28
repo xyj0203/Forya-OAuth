@@ -23,17 +23,17 @@ public interface UserService {
 
     /**
      * 通过id查询
-     * @param userQuery 用户查询参数的疯转
+     * @param id 用户查询参数的疯转
      * @return
      */
-    UserVo queryById(UserQuery userQuery);
+    UserVo queryById(Long id);
 
     /**
      * 通过用户名查询
-     * @param userQuery 用户参数封装
+     * @param username
      * @return
      */
-    Page<UserVo> queryByUsername(UserQuery userQuery);
+    Page<UserVo> queryByUsername(String username);
 
     /**
      * 添加用户

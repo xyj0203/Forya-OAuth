@@ -1,5 +1,6 @@
 package com.wojucai.service;
 
+import com.wojucai.Result;
 import com.wojucai.entity.po.Client;
 import com.wojucai.entity.reqParam.ClientQuery;
 import com.wojucai.entity.vo.ClientVo;
@@ -11,12 +12,10 @@ public interface ClientService {
 
     /**
      * 客户端名称模糊查询
-     * @param clientName
-     * @param pageNow 当前页
-     * @param pageSize 条数
+     * ClientQuery clientQuery 查询实体
      * @return 结果集
      */
-    Page<ClientVo> queryByClientName(String clientName, Integer pageNow, Integer pageSize);
+    Page<ClientVo> queryByClientName(ClientQuery clientQuery);
 
     /**
      * 客户端名称模糊查询
@@ -30,10 +29,9 @@ public interface ClientService {
 
     /**
      * 通过id删除
-     * @param id id
      * @return 返回 1 成功 0 失败
      */
-    int deleteById(Long id);
+    void deleteById(Integer id);
 
     /**
      * 增加客户端
@@ -61,5 +59,12 @@ public interface ClientService {
      * @param clientQuery
      * @return
      */
-    Page<ClientVo> queryById(ClientQuery clientQuery);
+    ClientVo queryById(ClientQuery clientQuery);
+
+    /**
+     * 查询全部
+     * @param clientQuery
+     * @return
+     */
+    Page<ClientVo> queryAll(ClientQuery clientQuery);
 }

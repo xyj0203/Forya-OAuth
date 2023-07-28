@@ -38,7 +38,7 @@ public class UserController {
     @ApiOperation("通过用户账号查询")
     @GetMapping("/queryUserByName")
     public Result queryUserByName(@Validated(value = CheckString.class) @RequestBody UserQuery userQuery) {
-        Page<UserVo> Users = userService.queryByUsername(userQuery);
+        Page<UserVo> Users = userService.queryByUsername(userQuery.getUsername());
         return Users != null ? Result.success(Users, ResultEnum.RequestSuccess) : Result.fail();
     }
 
@@ -78,7 +78,7 @@ public class UserController {
     @ApiOperation("通过id查询")
     @GetMapping("queryById/{id}")
     public Result queryById(@Validated(value = CheckId.class) @RequestBody UserQuery userQuery) {
-        UserVo page = userService.queryById(userQuery);
+        UserVo page = userService.queryById(userQuery.getId());
         return  page != null ? Result.success(page) : Result.fail();
     }
 }

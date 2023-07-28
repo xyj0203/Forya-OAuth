@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
- * @description:
+ * @description:启动类
  * @author: xuyujie
  * @date: 2023/05/25
  **/

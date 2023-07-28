@@ -28,12 +28,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserVo queryById(UserQuery userQuery) {
+    public UserVo queryById(Long id) {
         return null;
     }
 
     @Override
-    public Page<UserVo> queryByUsername(UserQuery userQuery) {
+    public Page<UserVo> queryByUsername(String username) {
         return null;
     }
 
