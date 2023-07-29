@@ -11,9 +11,6 @@ import javax.validation.constraints.NotNull;
  */
 public class UserQuery extends PageQuery{
 
-    public UserQuery(Integer pageNow, Integer pageNumber, String sort) {
-        super(pageNow, pageNumber, sort);
-    }
 
     /**
      * id
@@ -26,6 +23,10 @@ public class UserQuery extends PageQuery{
      */
     @NotBlank(message = "用户名不能为空", groups = {CheckString.class})
     private String username;
+
+    public UserQuery(Integer pageNow, Integer pageNumber, String sortAsc, String sortDesc) {
+        super(pageNow, pageNumber, sortAsc, sortDesc);
+    }
 
     public Long getId() {
         return id;

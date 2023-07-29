@@ -30,7 +30,6 @@ public class ClientController {
     @ApiOperation("通过客户端名称查询")
     @GetMapping("/queryClientByName")
     public Result queryClientByName(@Validated(value = CheckString.class) ClientQuery clientQuery) {
-        clientQuery.setPageNow(clientQuery.getPageNow()+1);
         return clientService.queryClientByName(clientQuery);
     }
 
@@ -55,7 +54,6 @@ public class ClientController {
     @ApiOperation("批量删除客户端信息")
     @DeleteMapping("deleteByIds")
     public Result deleteByIds(@Validated @NotNull(message = "客户端Id不能为空") @RequestBody List<Integer> ids) {
-        System.out.println(ids);
         return  clientService.deleteByIds(ids);
     }
 
@@ -63,5 +61,11 @@ public class ClientController {
     @GetMapping("queryById")
     public Result queryById(@Validated(value = CheckId.class) ClientQuery clientQuery) {
         return  clientService.queryById(clientQuery);
+    }
+
+    @ApiOperation("查询所有")
+    @GetMapping("queryAll")
+    public Result queryAll(ClientQuery clientQuery) {
+        return clientService.queryAll(clientQuery);
     }
 }

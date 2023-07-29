@@ -1,6 +1,7 @@
 package com.wojucai.entity.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.wojucai.entity.po.BaseEntity;
 import com.wojucai.entity.validate.Update;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,7 +17,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClientVo {
+public class ClientVo extends BaseEntity {
     /**
      * 自增主键
      */

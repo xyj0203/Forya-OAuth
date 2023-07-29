@@ -17,7 +17,7 @@ import java.util.List;
  * @date: 2023/05/25
  **/
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl extends AbstractImpl implements UserService {
 
     @Resource
     private UserRepository userRepository;

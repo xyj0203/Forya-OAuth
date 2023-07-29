@@ -32,4 +32,12 @@ public abstract class BaseEntity implements Serializable {
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
+
+    @Override
+    public String toString() {
+        return "BaseEntity{" +
+                "createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
+    }
 }

@@ -2,8 +2,8 @@
   <el-container style="height: 100%; border: 1px solid #eee">
   <el-aside width="200px">
     <div class="logo">
-      <img src="../assets/logo.png"/>
-      <span>OAuth2.0</span>
+      <div><img src="../assets/logo.png"/></div>
+      <div>OAuth2.0</div>
     </div>
     <el-menu >
       <router-link to="/index">
@@ -30,10 +30,7 @@
   <el-container>
     <el-header style="text-align: right; font-size: 15px" >
       <span class="header">OAuth2.0后台管理系统</span>
-      <span class="logout">
-        <i class="el-icon-switch-button" style="margin-right: 15px"></i>
-      <span @click="logout" >退出登录</span>
-      </span>
+      <span @click="logout" class="logout" ><i class="el-icon-switch-button" ></i>退出登录</span>
     </el-header>
     <el-main>
       <router-view></router-view>
@@ -74,13 +71,15 @@ export default {
 
 <style lang="scss" scoped>
 .el-header {
-    background-color: #B3C0D1;
     color: #333;
     line-height: 60px;
+    width: 100%;
+    position: relative;
   }
 
   .el-aside {
     color: #333;
+    border-right: 1px solid #606266;
   }
 
   .logo {
@@ -88,13 +87,16 @@ export default {
     img {
       width: 50px;
       height: 50px;
+      border-radius: 50%;
     }
   }
 
   .header {
-    position: relative;
-    right: 400px;
+    margin: 0 auto;
     font-size: 30px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
   }
 a{
   text-decoration: none;
@@ -103,4 +105,5 @@ a{
 .logout {
   cursor: pointer;
 }
+
 </style>

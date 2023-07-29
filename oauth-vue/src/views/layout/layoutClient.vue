@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div>
+  <div class="search">
     <el-input v-model="keyword" placeholder="Search" style="width: 300px;"></el-input>
     <el-button type="primary" icon="el-icon-search">搜索</el-button>
     <el-button type="primary" icon="el-icon-circle-plus-outline" @click="showAddDialog">添加</el-button>
@@ -9,6 +9,7 @@
     <el-table
     :data="tableData"
     style="width: 100%"
+    border="true"
     :default-sort = "{prop: 'date', order: 'descending'}"
     >
     <el-table-column
@@ -26,31 +27,38 @@
       align="center">
     </el-table-column>
     <el-table-column
-      prop="date"
-      label="客户端"
+      label="客户端名称"
+      prop="clientName"
       width="180"
       align="center">
     </el-table-column>
     <el-table-column
-      prop="name"
+      prop="createTime"
       label="添加时间"
       sortable
       width="180"
       align="center">
     </el-table-column>
     <el-table-column
-      prop="name"
+      prop="update_time"
       label="更新时间"
       sortable
       width="180"
       align="center">
     </el-table-column>
     <el-table-column
-      prop="name"
-      label="启用"
+      label="是否启用"
       width="130"
       align="center">
-      <el-switch v-model="ruleForm.delivery"></el-switch>
+      <template slot-scope="scope">
+        <el-switch
+              v-model="scope.row.enable"
+              :active-value="1"
+              :inactive-value="0"
+              active-color="#02538C"
+              inactive-color="#B9B9B9"
+              @change="changeSwitch(scope.row)"/>
+      </template>
     </el-table-column>
     <el-table-column label="操作"
     align="center">
@@ -117,21 +125,31 @@
   </el-form-item>
 </el-form>
   </el-dialog>
-
+  <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[1, 3, 5, 10]"
+      :page-size="pageNumber"
+      hide-on-single-page="true"
+      background="true"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
   </div>
 
 </template>
 
 <script>
+import client from '@/api/client/client'
 export default {
   data () {
     return {
+      currentPage: 1,
+      pageNumber: 10,
+      total: 0,
       formAdd: false,
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }],
+      tableData: [],
       ruleForm: {
         name: '',
         region: '',
@@ -192,11 +210,41 @@ export default {
     },
     cancle () {
       this.formAdd = false
+    },
+    getAll () {
+      return client.findAll(this.currentPage, this.pageNumber)
+    },
+    handleSizeChange (val) {
+      this.pageNumber = val
+      this.init()
+    },
+    handleCurrentChange (val) {
+      this.currentPage = val
+      this.init()
+    },
+    async init () {
+      const { data } = await this.getAll()
+      console.log(data)
+      if (data.code === 10000) {
+        const { object } = data
+        this.total = object.totalElements
+        this.tableData = object.content
+      } else {
+        this.$message({
+          type: 'warning',
+          message: data.message
+        })
+      }
     }
+  },
+  mounted: function () {
+    this.init()
   }
 }
 </script>
 
 <style>
-
+.search {
+  margin-bottom: 10px;
+}
 </style>

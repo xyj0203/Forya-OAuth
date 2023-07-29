@@ -9,9 +9,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
+/**
+ * @description: 转换器
+ * @author: xuyujie
+ * @date: 2023/07/29
+ **/
 @Component
 public class ClientConverter implements Function<Client, ClientVo> {
-
     @Override
     public ClientVo apply(Client client) {
         ClientVo clientVo = new ClientVo();

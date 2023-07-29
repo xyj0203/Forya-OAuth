@@ -38,7 +38,7 @@ request.interceptors.response.use(response => {
     } else {
       Message({
         showClose: true,
-        message: error.response.data.message,
+        message: '请联系管理员',
         type: 'error'
       })
     }

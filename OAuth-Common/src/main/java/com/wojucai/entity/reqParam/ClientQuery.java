@@ -13,9 +13,7 @@ import javax.validation.constraints.NotNull;
  **/
 public class ClientQuery extends PageQuery{
 
-    public ClientQuery(Integer pageNow, Integer pageNumber, String sort) {
-        super(pageNow, pageNumber, sort);
-    }
+
 
     /**
      * 客户端名称
@@ -28,6 +26,10 @@ public class ClientQuery extends PageQuery{
      */
     @NotNull(message = "id不能为空",groups = {CheckId.class})
     private Integer id;
+
+    public ClientQuery(Integer pageNow, Integer pageNumber, String sortAsc, String sortDesc) {
+        super(pageNow, pageNumber, sortAsc, sortDesc);
+    }
 
     public String getClientName() {
         return clientName;

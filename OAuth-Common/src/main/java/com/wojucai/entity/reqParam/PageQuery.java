@@ -13,7 +13,7 @@ public abstract class PageQuery {
     /**
      * 当前页
      */
-    private Integer pageNow = 0;
+    private Integer pageNow = 1;
 
     /**
      * 条数
@@ -21,16 +21,21 @@ public abstract class PageQuery {
     private Integer pageNumber = PAGE_NUMBER;
 
     /**
-     * 排序规则
+     * 正序排序规则
      */
-    private String sort = "ASC";
+    private String sortAsc;
 
-    public PageQuery(Integer pageNow, Integer pageNumber, String sort) {
+    /**
+     * 逆序排序规则
+     */
+    private String sortDesc;
+
+    public PageQuery(Integer pageNow, Integer pageNumber, String sortAsc, String sortDesc) {
         verifyPageNow(pageNow);
         verifyPageNumber(pageNumber);
-        verifySort(sort);
+        this.sortAsc = sortAsc;
+        this.sortDesc = sortDesc;
     }
-
 
     public Integer getPageNow() {
         return pageNow;
@@ -52,7 +57,7 @@ public abstract class PageQuery {
         if (pageNow == null || pageNow < 1) {
             this.pageNow = PAGE_NOW;
         } else {
-            this.pageNow = pageNow - 1;
+            this.pageNow = pageNow;
         }
     }
 
@@ -66,17 +71,19 @@ public abstract class PageQuery {
         }
     }
 
-    private void verifySort(String sort) {
-        if ((ASC.equals(sort) || DESC.equals(sort))) {
-            this.sort = sort;
-        }
+    public String getSortAsc() {
+        return sortAsc;
     }
 
-    public String getSort() {
-        return sort;
+    public void setSortAsc(String sortAsc) {
+        this.sortAsc = sortAsc;
     }
 
-    public void setSort(String sort) {
-        this.sort = sort;
+    public String getSortDesc() {
+        return sortDesc;
+    }
+
+    public void setSortDesc(String sortDesc) {
+        this.sortDesc = sortDesc;
     }
 }

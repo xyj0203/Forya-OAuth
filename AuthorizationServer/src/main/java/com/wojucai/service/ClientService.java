@@ -64,4 +64,12 @@ public interface ClientService {
      */
     @GetMapping("/client/queryById")
     Result queryById(@SpringQueryMap ClientQuery clientQuery);
+
+    /**
+     * 查询所有
+     * @param clientQuery 条件信息
+     * @return
+     */
+    @GetMapping("/client/queryAll")
+    Result queryAll(@SpringQueryMap ClientQuery clientQuery);
 }

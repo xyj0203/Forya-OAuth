@@ -7,10 +7,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="OAuth-ResourceServer" />
+        <module name="OAuth-Client" />
         <module name="AuthorizationServer" />
         <module name="OAuth-Common" />
-        <module name="OAuth-Client" />
+        <module name="OAuth-ResourceServer" />
       </profile>
     </annotationProcessing>
   </component>

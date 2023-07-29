@@ -6,12 +6,10 @@ import com.wojucai.entity.reqParam.ClientQuery;
 import com.wojucai.service.ClientService;
 import com.wojucai.util.converter.ClientConverter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,36 +22,33 @@ import com.wojucai.entity.vo.ClientVo;
  **/
 @Slf4j
 @Service
-public class ClientServiceImpl implements ClientService {
+public class ClientServiceImpl extends AbstractImpl implements ClientService {
 
     @Resource
     private ClientRepository clientRepository;
-    @Resource
-    private ClientConverter clientConverter;
+    @Autowired
+    private ClientConverter converter;
 
     @Override
     public Page<ClientVo> queryByClientName(ClientQuery clientQuery) {
-        return queryByClientName(clientQuery.getClientName(), clientQuery.getSort(), clientQuery.getPageNow(), clientQuery.getPageNumber());
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
+                .withMatcher("client_name", match -> match.contains());
+        Client client = new Client();
+        client.setClientName(clientQuery.getClientName());
+        return query(clientQuery, client, matcher, converter, clientRepository);
     }
 
     @Override
-    public Page<ClientVo> queryByClientName(String clientName, String sort, Integer pageNow, Integer pageSize) {
-        //创建分页
-        Sort sortOp = Sort.by(sort.equals("ASC")?Sort.Order.asc("clientName"):Sort.Order.desc("clientName"));
-        Pageable page = PageRequest.of(pageNow, pageSize, sortOp);
-        ExampleMatcher matcher = ExampleMatcher.matching()
-                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
-                .withIgnoreCase(true)
-                .withIgnorePaths("id");
-        Client client = new Client();
-        client.setClientName(clientName);
-        //使用client对象和matcher对象创建Example对象
-        Example<Client> clientExample = Example.of(client, matcher);
-        // 查询到的对象
-        Page<Client> pageList = clientRepository.findAll(clientExample, page);
-        // 将Client转换为ClientVo
-        Page<ClientVo> returnPage = pageList.map(clientConverter);
-        return returnPage;
+    public ClientVo queryById(ClientQuery clientQuery) {
+        Optional<Client> optionalClient = clientRepository.findById(clientQuery.getId());
+        ClientVo clientVo = optionalClient.map(converter).orElse(null);
+        return clientVo;
+    }
+
+    @Override
+    public Page<ClientVo> queryAll(ClientQuery clientQuery) {
+        return query(clientQuery,null,null, converter, clientRepository);
     }
 
     @Override
@@ -75,19 +70,4 @@ public class ClientServiceImpl implements ClientService {
     public void batchDelete(List<Integer> ids) {
         clientRepository.deleteAllByIdInBatch(ids);
     }
-
-    @Override
-    public ClientVo queryById(ClientQuery clientQuery) {
-        Optional<Client> optionalClient = clientRepository.findById(clientQuery.getId());
-        ClientVo clientVo = optionalClient.map(clientConverter).orElse(null);
-        return clientVo;
-    }
-
-    @Override
-    public Page<ClientVo> queryAll(ClientQuery clientQuery) {
-
-        return null;
-    }
-
-
 }

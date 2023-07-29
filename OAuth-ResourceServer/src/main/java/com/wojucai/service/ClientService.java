@@ -18,16 +18,6 @@ public interface ClientService {
     Page<ClientVo> queryByClientName(ClientQuery clientQuery);
 
     /**
-     * 客户端名称模糊查询
-     * @param clientName
-     * @param pageNow 当前页
-     * @param pageSize 条数
-     * @param sort 排序方式
-     * @return 结果集
-     */
-    Page<ClientVo> queryByClientName(String clientName, String sort, Integer pageNow, Integer pageSize);
-
-    /**
      * 通过id删除
      * @return 返回 1 成功 0 失败
      */

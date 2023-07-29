@@ -11,7 +11,7 @@
  Target Server Version : 80013
  File Encoding         : 65001
 
- Date: 26/07/2023 21:14:50
+ Date: 29/07/2023 22:28:34
 */
 
 SET NAMES utf8mb4;
@@ -28,7 +28,7 @@ CREATE TABLE `hibernate_sequence`  (
 -- ----------------------------
 -- Records of hibernate_sequence
 -- ----------------------------
-INSERT INTO `hibernate_sequence` VALUES (11);
+INSERT INTO `hibernate_sequence` VALUES (17);
 
 -- ----------------------------
 -- Table structure for tb_client
@@ -42,18 +42,18 @@ CREATE TABLE `tb_client`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `client_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `redirect_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `insert_time` datetime(0) NULL DEFAULT NULL,
+  `create_time` datetime(0) NULL DEFAULT NULL,
   `update_time` datetime(0) NULL DEFAULT NULL,
   `enable` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tb_client
 -- ----------------------------
-INSERT INTO `tb_client` VALUES ('1', '1', '1', '1', 1, '测试', '1', '2023-06-12 09:23:16', '2023-06-21 09:23:19', NULL);
-INSERT INTO `tb_client` VALUES ('h7mkriF2aINyeNh5', 'SKVlmCQP97tzvT16', '[profile, img]', '测试客户端功能', 2, '测试客户端', 'http://localhost:8080/login', '2023-06-21 09:23:21', '2023-06-20 09:23:24', NULL);
-INSERT INTO `tb_client` VALUES (NULL, NULL, '111', '用于OAuth2.0登录', 3, '莴苣菜工作室', 'http://localhost:8080', NULL, NULL, 1);
+INSERT INTO `tb_client` VALUES ('1', '1', '[update]', '1', 1, '%测试', '1', '2023-06-12 09:23:16', '2023-06-21 09:23:19', 1);
+INSERT INTO `tb_client` VALUES ('h7mkriF2aINyeNh5', 'SKVlmCQP97tzvT16', '[profile, img]', '测试客户端功能', 2, '测试客户端', 'http://localhost:8080/login', '2023-06-21 09:23:21', '2023-06-20 09:23:24', 1);
+INSERT INTO `tb_client` VALUES (NULL, NULL, '[update]', '用于OAuth2.0登录', 3, '莴苣菜工作室', 'http://localhost:8080', '2023-07-26 17:28:07', '2023-07-11 17:28:10', 1);
 INSERT INTO `tb_client` VALUES ('', '', '[update]', '莴苣菜请求', 4, '莴苣菜客户端', 'http://localhost', NULL, NULL, 1);
 INSERT INTO `tb_client` VALUES ('', '', '[update]', '莴苣菜请求', 5, '莴苣菜客户端', 'http://localhost', NULL, NULL, 1);
 INSERT INTO `tb_client` VALUES ('', '', '[update]', '莴苣菜请求', 6, '莴苣菜客户端', 'http://localhost', NULL, NULL, 1);
@@ -61,6 +61,11 @@ INSERT INTO `tb_client` VALUES ('', '', '[update]', '莴苣菜请求', 7, '莴�
 INSERT INTO `tb_client` VALUES ('', '', '[update]', '莴苣菜请求', 8, '莴苣菜客户端', 'http://localhost', NULL, NULL, 1);
 INSERT INTO `tb_client` VALUES ('', '', '[update]', '莴苣菜请求', 9, '莴苣菜客户端', 'http://localhost', NULL, NULL, 1);
 INSERT INTO `tb_client` VALUES ('', '', '[update]', '莴苣菜请求', 10, '莴苣菜客户端', 'http://localhost', NULL, NULL, 1);
+INSERT INTO `tb_client` VALUES ('', '', '[update]', '莴苣菜请求', 11, '莴苣菜客户端', 'http://localhost', NULL, NULL, 1);
+INSERT INTO `tb_client` VALUES ('63dasdasfasfasfasf', 'pariatur sunt Excepteur consequat', '[1,2,3,4,5]', '局外联被口圆所就从究参深人流理非引。段第放技空无们改亲场他经指么量感至。命求受产同且水属众区学理通率况值。六单构东界成米信海方查给内步开。起造问处算它际况们活何一质整社。车般用习候重验别温之志按部劳那。', 12, '美务素达把', 'http://malacshanx.kp/ckqlcowwo', NULL, NULL, 1);
+INSERT INTO `tb_client` VALUES ('63dasdasfasfasfasf', 'pariatur sunt Excepteur consequat', '[1,2,3,4,5]', '局外联被口圆所就从究参深人流理非引。段第放技空无们改亲场他经指么量感至。命求受产同且水属众区学理通率况值。六单构东界成米信海方查给内步开。起造问处算它际况们活何一质整社。车般用习候重验别温之志按部劳那。', 13, '美务素达把', 'http://malacshanx.kp/ckqlcowwo', NULL, NULL, 1);
+INSERT INTO `tb_client` VALUES ('63dasdasfasfasfasf', 'pariatur sunt Excepteur consequat', '[1,2,3,4,5]', '局外联被口圆所就从究参深人流理非引。段第放技空无们改亲场他经指么量感至。命求受产同且水属众区学理通率况值。六单构东界成米信海方查给内步开。起造问处算它际况们活何一质整社。车般用习候重验别温之志按部劳那。', 14, '美务素达把', 'http://malacshanx.kp/ckqlcowwo', NULL, NULL, 1);
+INSERT INTO `tb_client` VALUES ('63dasdasfasfasfasf', 'pariatur sunt Excepteur consequat', '[1,2,3,4,5]', '局外联被口圆所就从究参深人流理非引。段第放技空无们改亲场他经指么量感至。命求受产同且水属众区学理通率况值。六单构东界成米信海方查给内步开。起造问处算它际况们活何一质整社。车般用习候重验别温之志按部劳那。', 16, '美务素达把', 'http://malacshanx.kp/ckqlcowwo', '2023-07-27 14:37:46', '2023-07-27 14:37:46', 1);
 
 -- ----------------------------
 -- Table structure for tb_menu
@@ -112,14 +117,16 @@ CREATE TABLE `tb_role`  (
   `role_id` int(255) NOT NULL AUTO_INCREMENT,
   `role_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `role_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `create_time` datetime(0) NULL DEFAULT NULL,
+  `update_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tb_role
 -- ----------------------------
-INSERT INTO `tb_role` VALUES (1, '普通用户', 'USER');
-INSERT INTO `tb_role` VALUES (2, '管理员', 'ADMIN');
+INSERT INTO `tb_role` VALUES (1, '普通用户', 'USER', NULL, NULL);
+INSERT INTO `tb_role` VALUES (2, '管理员', 'ADMIN', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for tb_role_menu
@@ -164,13 +171,15 @@ CREATE TABLE `tb_user`  (
   `age` int(11) NULL DEFAULT NULL,
   `description` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `role` int(255) NULL DEFAULT NULL,
+  `create_time` datetime(0) NULL DEFAULT NULL,
+  `update_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of tb_user
 -- ----------------------------
-INSERT INTO `tb_user` VALUES (1, 'admin', 'g��_Y��vL���E', 'http://local', '男', 18, '有点傻', 2);
-INSERT INTO `tb_user` VALUES (2, 'userdemo', 'g��_Y��vL���E', 'http://local', '男', 18, '有点傻', 1);
+INSERT INTO `tb_user` VALUES (1, 'admin', 'g��_Y��vL���E', 'http://local', '男', 18, '有点傻', 2, NULL, NULL);
+INSERT INTO `tb_user` VALUES (2, 'userdemo', 'g��_Y��vL���E', 'http://local', '男', 18, '有点傻', 1, NULL, NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;
