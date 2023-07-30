@@ -3,6 +3,7 @@ package com.wojucai.service;
 import com.wojucai.entity.Client;
 import com.wojucai.entity.Result;
 import com.wojucai.entity.reqParam.ClientQuery;
+import feign.Param;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.web.bind.annotation.*;
@@ -72,4 +73,13 @@ public interface ClientService {
      */
     @GetMapping("/client/queryAll")
     Result queryAll(@SpringQueryMap ClientQuery clientQuery);
+
+    /**
+     * 更改状态
+     * @param id id
+     * @param enable 是否启用
+     * @return
+     */
+    @PutMapping("/client/changeEnable")
+    Result changeEnable(@RequestParam("id") Integer id, @RequestParam("enable") Integer enable);
 }

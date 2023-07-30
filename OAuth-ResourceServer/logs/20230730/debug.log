@@ -1,0 +1,7 @@
+2023-07-30 15:15:01.519 [main] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@252f00ba
+2023-07-30 15:15:08.526 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping - 21 mappings in 'requestMappingHandlerMapping'
+2023-07-30 15:15:08.799 [main] DEBUG org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/swagger-ui/] in 'viewControllerHandlerMapping'
+2023-07-30 15:15:09.001 [main] DEBUG org.springframework.web.servlet.handler.SimpleUrlHandlerMapping - Patterns [/swagger-ui/**] in 'resourceHandlerMapping'
+2023-07-30 15:15:09.096 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2023-07-30 15:15:09.164 [main] DEBUG org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 1 @ExceptionHandler, 1 ResponseBodyAdvice
+2023-07-30 15:15:11.450 [SpringApplicationShutdownHook] DEBUG org.springframework.web.context.support.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@252f00ba, started on Sun Jul 30 15:15:01 GMT+08:00 2023

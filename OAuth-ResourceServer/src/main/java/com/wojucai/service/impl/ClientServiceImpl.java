@@ -4,6 +4,7 @@ import com.wojucai.dao.ClientRepository;
 import com.wojucai.entity.po.Client;
 import com.wojucai.entity.reqParam.ClientQuery;
 import com.wojucai.service.ClientService;
+import com.wojucai.util.TextUtils;
 import com.wojucai.util.converter.ClientConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,12 +53,28 @@ public class ClientServiceImpl extends AbstractImpl implements ClientService {
     }
 
     @Override
+    public Integer changeEnable(Integer id, Integer enable) {
+        Optional<Client> optionalClient = clientRepository.findById(id);
+        if (optionalClient.orElse(null) == null) {
+            return 0;
+        }
+        Client client = optionalClient.get();
+        client.setEnable(enable);
+        Client save = clientRepository.save(client);
+        return save == null ? 0 : 1;
+    }
+
+    @Override
     public void deleteById(Integer id) {
         clientRepository.deleteById(id);
     }
 
     @Override
     public Client insertClient(Client client) {
+        String clientId = TextUtils.generateRandomCode(16);
+        String clientSecret = TextUtils.generateRandomCode(16);
+        client.setClientId(clientId);
+        client.setClientSecret(clientSecret);
         return clientRepository.save(client);
     }
 

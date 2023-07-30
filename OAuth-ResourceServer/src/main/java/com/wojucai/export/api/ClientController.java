@@ -88,4 +88,14 @@ public class ClientController {
         Page<ClientVo> clientVos = clientService.queryAll(clientQuery);
         return clientVos != null ? Result.success(clientVos) : Result.fail("数据为空");
     }
+
+    @ApiOperation("更新状态")
+    @PutMapping("changeEnable")
+    public Result changeEnable(@RequestParam("id") Integer id, @RequestParam("enable") Integer enable) {
+        if (!(enable == 1 || enable == 0) || id == null) {
+            return Result.fail(ResultEnum.ParamsIllegal);
+        }
+        Integer i = clientService.changeEnable(id, enable);
+        return i == 1 ? Result.success(ResultEnum.RequestSuccess) : Result.fail("客户端不存在");
+    }
 }

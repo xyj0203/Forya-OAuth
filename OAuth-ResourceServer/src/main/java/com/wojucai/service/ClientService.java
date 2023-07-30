@@ -57,4 +57,12 @@ public interface ClientService {
      * @return
      */
     Page<ClientVo> queryAll(ClientQuery clientQuery);
+
+    /**
+     * 更新状态信息
+     * @param id 客户端id
+     * @param enable 是否启用
+     * @return
+     */
+    Integer changeEnable(Integer id, Integer enable);
 }

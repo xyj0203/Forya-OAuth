@@ -6,6 +6,7 @@ import com.wojucai.entity.reqParam.ClientQuery;
 import com.wojucai.entity.validate.CheckId;
 import com.wojucai.entity.validate.CheckString;
 import com.wojucai.entity.validate.Update;
+import com.wojucai.enums.ResultEnum;
 import com.wojucai.service.ClientService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -53,8 +55,8 @@ public class ClientController {
 
     @ApiOperation("批量删除客户端信息")
     @DeleteMapping("deleteByIds")
-    public Result deleteByIds(@Validated @NotNull(message = "客户端Id不能为空") @RequestBody List<Integer> ids) {
-        return  clientService.deleteByIds(ids);
+    public Result deleteByIds(@Validated @NotNull(message = "客户端Id不能为空") @RequestBody Integer[] ids) {
+        return  clientService.deleteByIds(Arrays.asList(ids));
     }
 
     @ApiOperation("通过id查询")
@@ -67,5 +69,11 @@ public class ClientController {
     @GetMapping("queryAll")
     public Result queryAll(ClientQuery clientQuery) {
         return clientService.queryAll(clientQuery);
+    }
+
+    @ApiOperation("更新状态")
+    @PutMapping("changeEnable")
+    public Result changeEnable(Integer id, Integer enable) {
+        return clientService.changeEnable(id, enable);
     }
 }
