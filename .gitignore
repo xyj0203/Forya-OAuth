@@ -1,6 +1,8 @@
 # Project exclude paths
 /OAuth-Common/target/
 /OAuth-ResourceServer/target/
+/AuthorizationServer/target
 /.idea
 /oauth-vue/node_modules
 /logs
+/OAuth-ResourceServer/logs
