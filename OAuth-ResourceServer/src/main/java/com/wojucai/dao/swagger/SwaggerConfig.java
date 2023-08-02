@@ -1,4 +1,4 @@
-package com.wojucai.configuration.swagger;
+package com.wojucai.dao.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -30,6 +30,11 @@ spring:
       allow_unquoted_control_chars: true
       allow_single_quotes: true
     property-naming-strategy: LOWER_CAMEL_CASE
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081
 server:
   port: 8082
   servlet:
