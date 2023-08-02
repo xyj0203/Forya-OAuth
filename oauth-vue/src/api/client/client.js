@@ -1,4 +1,5 @@
 import axios from '@/utils/request'
+import axios from '@/utils/request'
 
 const client = {
   // 1.获取所有信息

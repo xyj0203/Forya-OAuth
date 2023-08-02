@@ -20,6 +20,7 @@ import java.sql.Date;
 @Entity
 @Table(name = "tb_scopes")
 public class Scope {
+
     /**
      * id
      */
