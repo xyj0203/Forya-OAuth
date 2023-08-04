@@ -59,7 +59,7 @@ public class User {
     /**
      * 插入时间
      */
-    private Date insertTime;
+    private Date createTime;
 
     /**
      * 更新时间

@@ -2,11 +2,13 @@ package com.wojucai.export.api;
 
 import com.wojucai.Result;
 import com.wojucai.entity.po.User;
+import com.wojucai.entity.reqParam.ClientQuery;
 import com.wojucai.entity.reqParam.UserQuery;
 import com.wojucai.entity.reqParam.UserQuery;
 import com.wojucai.entity.validate.CheckId;
 import com.wojucai.entity.validate.CheckString;
 import com.wojucai.entity.validate.Update;
+import com.wojucai.entity.vo.ClientVo;
 import com.wojucai.entity.vo.UserVo;
 import com.wojucai.enums.ResultEnum;
 import com.wojucai.service.UserService;
@@ -38,8 +40,8 @@ public class UserController {
     @ApiOperation("通过用户账号查询")
     @GetMapping("/queryUserByName")
     public Result queryUserByName(@Validated(value = CheckString.class) @RequestBody UserQuery userQuery) {
-        Page<UserVo> Users = userService.queryByUsername(userQuery.getUsername());
-        return Users != null ? Result.success(Users, ResultEnum.RequestSuccess) : Result.fail();
+        Page<UserVo> Users = userService.queryByUsername(userQuery);
+        return Users != null ? Result.success(Users, ResultEnum.RequestSuccess) : Result.fail(ResultEnum.UserNotExist);
     }
 
     @ApiOperation("添加用户")
@@ -59,8 +61,12 @@ public class UserController {
     @ApiOperation("通过Id删除用户信息")
     @DeleteMapping("deleteById/{id}")
     public Result deleteById(@PathVariable("id") @NotNull(message = "id不能为空") Long id) {
-        return userService.deleteById(id) == 1 ?
-                Result.success(ResultEnum.RequestSuccess) : Result.fail(ResultEnum.RequestFail);
+        try {
+            userService.deleteById(id);
+        } catch (Exception e) {
+            throw new IllegalStateException("用户删除失败！");
+        }
+        return Result.success(ResultEnum.RequestSuccess);
     }
 
     @ApiOperation("批量删除用户信息")
@@ -78,7 +84,14 @@ public class UserController {
     @ApiOperation("通过id查询")
     @GetMapping("queryById/{id}")
     public Result queryById(@Validated(value = CheckId.class) @RequestBody UserQuery userQuery) {
-        UserVo page = userService.queryById(userQuery.getId());
-        return  page != null ? Result.success(page) : Result.fail();
+        UserVo page = userService.queryById(userQuery);
+        return  page != null ? Result.success(page) : Result.fail(ResultEnum.UserNotExist);
+    }
+
+    @ApiOperation("查询所有")
+    @GetMapping("queryAll")
+    public Result queryAll(UserQuery clientQuery) {
+        Page<UserVo> userVos = userService.queryAll(clientQuery);
+        return userVos != null ? Result.success(userVos) : Result.fail("数据为空");
     }
 }

@@ -1,6 +1,7 @@
 package com.wojucai.entity.vo;
 
 import com.wojucai.entity.po.Role;
+import lombok.Data;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -11,6 +12,7 @@ import java.sql.Date;
  * @author: xuyujie
  * @date: 2023/07/27
  **/
+@Data
 public class UserVo {
     /**
      * 用户Id
@@ -25,11 +27,6 @@ public class UserVo {
     private String username;
 
     /**
-     * 密码
-     */
-    private String password;
-
-    /**
      * 用户头像
      */
     private String userImage;
@@ -37,7 +34,7 @@ public class UserVo {
     /**
      * 性别
      */
-    private Integer sex;
+    private Character sex;
 
     /**
      * 年龄
@@ -52,7 +49,7 @@ public class UserVo {
     /**
      * 插入时间
      */
-    private Date insertTime;
+    private Date createTime;
 
     /**
      * 更新时间

@@ -30,11 +30,13 @@ public class Role {
     @javax.persistence.Id
     @GeneratedValue
     private Integer roleId;
+
     /**
      * 角色描述
      */
     @NotBlank(message = "角色描述不能为空")
     private String roleDesc;
+
     /**
      * 角色名
      */

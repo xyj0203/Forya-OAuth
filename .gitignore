@@ -7,3 +7,4 @@
 /logs
 /OAuth-ResourceServer/logs
 /OAuth-Client/target
+/OAuth-Login/target

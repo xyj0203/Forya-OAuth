@@ -11,6 +11,7 @@
         <module name="AuthorizationServer" />
         <module name="OAuth-Common" />
         <module name="OAuth-ResourceServer" />
+        <module name="OAuth-Login" />
       </profile>
     </annotationProcessing>
   </component>

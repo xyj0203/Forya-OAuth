@@ -11,7 +11,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
  * @date: 2023/05/25
  **/
 @SpringBootApplication
-@EnableWebMvc
 @EnableJpaAuditing
 public class OAuthResourceServer {
     public static void main(String[] args) {

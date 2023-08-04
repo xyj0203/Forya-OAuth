@@ -23,17 +23,17 @@ public interface UserService {
 
     /**
      * 通过id查询
-     * @param id 用户查询参数的疯转
+     * @param userQuery 用户查询参数的封装
      * @return
      */
-    UserVo queryById(Long id);
+    UserVo queryById(UserQuery userQuery);
 
     /**
      * 通过用户名查询
-     * @param username
+     * @param userQuery
      * @return
      */
-    Page<UserVo> queryByUsername(String username);
+    Page<UserVo> queryByUsername(UserQuery userQuery);
 
     /**
      * 添加用户
@@ -54,5 +54,12 @@ public interface UserService {
      * @param id 用户id
      * @return
      */
-    int deleteById(Long id);
+    void deleteById(Long id);
+
+    /**
+     * 分页查询
+     * @param userQuery 客户端查询
+     * @return
+     */
+    Page<UserVo> queryAll(UserQuery userQuery);
 }

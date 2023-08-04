@@ -44,7 +44,6 @@ public class ClientController {
     @ApiOperation("添加客户端")
     @PostMapping("/insertClient")
     public Result insertClient(@Validated @RequestBody Client client) {
-        System.out.println(client);
         return clientService.insertClient(client) == null ?
                  Result.fail(ResultEnum.ParamsIllegal) : Result.success(ResultEnum.RequestSuccess);
     }
@@ -59,7 +58,11 @@ public class ClientController {
     @ApiOperation("通过Id删除客户端信息")
     @DeleteMapping("deleteById/{id}")
     public Result deleteById(@PathVariable("id") @NotNull(message = "id不能为空") Integer id) {
-        clientService.deleteById(id);
+        try {
+            clientService.deleteById(id);
+        } catch (Exception e) {
+            throw new IllegalStateException("客户端删除失败！");
+        }
         return Result.success(ResultEnum.RequestSuccess);
     }
 
