@@ -1,5 +1,4 @@
 import axios from '@/utils/request'
-import axios from '@/utils/request'
 
 const client = {
   // 1.获取所有信息
@@ -29,6 +28,14 @@ const client = {
     url: '/client/updateClient',
     method: 'put',
     data: obj
+  }),
+  queryScope: () => axios({
+    url: '/client/queryScope',
+    method: 'get'
+  }),
+  queryScopeProperty: (id) => axios({
+    url: `/client/queryScopeProperty/${id}`,
+    method: 'get'
   })
 }
 

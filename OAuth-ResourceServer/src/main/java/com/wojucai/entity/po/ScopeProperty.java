@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * @description: 作用域
+ * @description:作用域属性
  * @author: xuyujie
  * @date: 2023/08/05
  **/
@@ -16,9 +16,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "tb_scope")
-public class Scope extends BaseEntity{
-
+@Table(name = "tb_property")
+public class ScopeProperty extends BaseEntity{
     /**
      * id
      */
@@ -27,12 +26,22 @@ public class Scope extends BaseEntity{
     private Integer id;
 
     /**
-     * 类的全限定名
+     * 属性
      */
-    private String  scopeName;
+    private String property;
+
+    /**
+     * 类Id
+     */
+    private Integer classId;
+
+    /**
+     * 读写的权限
+     */
+    private Integer behavior;
 
     /**
      * 描述
      */
-    private String scopeDescription;
+    private String description;
 }

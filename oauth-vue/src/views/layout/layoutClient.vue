@@ -10,9 +10,8 @@
     ref="multipleTable"
     :data="tableData"
     style="width: 100%"
-    border="true"
+    border
     :default-sort = "{prop: 'date', order: 'descending'}"
-    @selection-change="handleSelectionChange"
     >
     <el-table-column
       prop="check"
@@ -92,18 +91,13 @@
     <el-switch v-model="client.enable"></el-switch>
   </el-form-item>
   <el-form-item label="Scope" prop="type">
-    <el-checkbox-group v-model="client.type">
-      <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-      <el-checkbox label="地推活动" name="type"></el-checkbox>
-      <el-checkbox label="线下主题活动" name="type"></el-checkbox>
-      <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-    </el-checkbox-group>
+    <el-cascader-panel :options="options"></el-cascader-panel>
   </el-form-item>
   <el-form-item label="客户端描述" prop="description">
     <el-input type="textarea" v-model="client.description"></el-input>
   </el-form-item>
   <el-form-item>
-    <el-button type="primary" @click="onupdate">确定</el-button>
+    <el-button type="primary" @click="onUpdate">确定</el-button>
     <el-button @click="cancle()">取消</el-button>
   </el-form-item>
 </el-form>
@@ -125,12 +119,7 @@
     <el-switch v-model="client.enable"></el-switch>
   </el-form-item>
   <el-form-item label="Scope" prop="type">
-    <el-checkbox-group v-model="client.type">
-      <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-      <el-checkbox label="地推活动" name="type"></el-checkbox>
-      <el-checkbox label="线下主题活动" name="type"></el-checkbox>
-      <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-    </el-checkbox-group>
+    <el-cascader-panel :options="options" :props="cascaderProps"></el-cascader-panel>
   </el-form-item>
   <el-form-item label="客户端描述" prop="description">
     <el-input type="textarea" v-model="client.description"></el-input>
@@ -147,8 +136,8 @@
       :current-page="currentPage"
       :page-sizes="[1, 3, 5, 10]"
       :page-size="pageNumber"
-      hide-on-single-page="true"
-      background="true"
+      hide-on-single-page
+      background
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
     </el-pagination>
@@ -160,6 +149,7 @@
 import client from '@/api/client/client'
 export default {
   data () {
+    const that = this
     return {
       currentPage: 1,
       pageNumber: 10,
@@ -169,33 +159,58 @@ export default {
       tableData: [],
       client: {
       },
+      keyword: '',
       rules: {
         clientName: [
           { required: true, message: '请输入客户端名称', trigger: 'blur' },
           { min: 5, max: 20, message: '长度在 5 到 20 个字符', trigger: 'blur' }
-        ],
-        region: [
-          { required: true, message: '请选择活动区域', trigger: 'change' }
-        ],
-        date1: [
-          { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
-        ],
-        date2: [
-          { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
-        ],
-        type: [
-          { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
-        ],
-        resource: [
-          { required: true, message: '请选择活动资源', trigger: 'change' }
-        ],
-        desc: [
-          { required: true, message: '请填写活动形式', trigger: 'blur' }
         ]
-      }
+      },
+      /** 配置级联面板 */
+      cascaderProps: {
+        multiple: true,
+        lazy: true,
+        lazyLoad (node, resolve) {
+          const { value } = node
+          setTimeout(() => {
+            const nodes = that.queryScopeProperty(value)
+            // 通过调用resolve将子节点数据返回，通知组件数据加载完成
+            nodes.then(res => {
+              console.log(Array.from(res))
+              resolve(Array.from(res))
+            })
+          }, 1000)
+        }
+      },
+      options: [
+      ]
     }
   },
   methods: {
+    async queryScopeProperty (id) {
+      const { data } = await client.queryScopeProperty(id)
+      const nodes = []
+      if (data.code === 10000) {
+        const { object } = data
+        for (const obj of object) {
+          nodes.push({
+            value: obj.id,
+            label: obj.description + (obj.behavior === 0 ? '-读' : '-写'),
+            leaf: true
+          })
+        }
+      }
+      return nodes
+    },
+    async queryScope () {
+      const { data } = await client.queryScope()
+      if (data.code === 10000) {
+        const { object } = data
+        for (const obj of object) {
+          this.options.push({ value: obj.id, label: obj.scopeDescription, leaf: false })
+        }
+      }
+    },
     async onAdd () {
       const obj = Object.assign({}, client)
       this.client = {}
@@ -207,7 +222,7 @@ export default {
       await client.updateClient(obj)
     },
     handleEdit (client) {
-      this.formeEdit = true
+      this.formEdit = true
       this.client = Object.assign({}, client)
     },
     async handleBatchDelte () {
@@ -299,6 +314,7 @@ export default {
   },
   mounted: function () {
     this.init()
+    this.queryScope()
   }
 }
 </script>

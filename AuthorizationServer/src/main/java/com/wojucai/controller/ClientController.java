@@ -76,4 +76,16 @@ public class ClientController {
     public Result changeEnable(Integer id, Integer enable) {
         return clientService.changeEnable(id, enable);
     }
+
+    @ApiOperation("/查询作用域")
+    @GetMapping("/queryScope")
+    public Result queryScope() {
+        return clientService.queryScope();
+    }
+
+    @ApiOperation("/查询作用域的属性")
+    @GetMapping("/queryScopeProperty/{id}")
+    public Result queryScopeProperty(@NotNull(message = "id不能为空") @PathVariable("id") Integer id) {
+        return clientService.queryScopeProperty(id);
+    }
 }

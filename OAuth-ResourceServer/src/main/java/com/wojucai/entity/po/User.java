@@ -1,12 +1,13 @@
 package com.wojucai.entity.po;
 
+import com.wojucai.entity.annotation.ScopeAnnotations;
+import com.wojucai.entity.annotation.PropertyAnnotations;
 import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.sql.Date;
 
 /**
  * @description:用户实体类
@@ -18,7 +19,9 @@ import java.sql.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tb_user")
-public class User {
+@ScopeAnnotations(classDescription = "个人信息")
+public class User extends BaseEntity{
+
     /**
      * 用户Id
      */
@@ -29,6 +32,7 @@ public class User {
     /**
      * 用户名
      */
+    @PropertyAnnotations(description = "用户名", behavior = 1)
     private String username;
 
     /**
@@ -39,35 +43,30 @@ public class User {
     /**
      * 用户头像
      */
+    @PropertyAnnotations(description = "头像", behavior = 1)
     private String userImage;
 
     /**
      * 性别
      */
+    @PropertyAnnotations(description = "性别", behavior = 1)
     private Integer sex;
 
     /**
      * 年龄
      */
+    @PropertyAnnotations(description = "年龄", behavior = 1)
     private Integer age;
 
     /**
      * 描述
      */
+    @PropertyAnnotations(description = "描述", behavior = 1)
     private String description;
-
-    /**
-     * 插入时间
-     */
-    private Date createTime;
-
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
 
     /**
      * 角色
      */
+    @PropertyAnnotations(description = "角色", behavior = 0)
     private Integer role;
 }

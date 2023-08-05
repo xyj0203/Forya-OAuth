@@ -1,7 +1,11 @@
 package com.wojucai.service.impl;
 
 import com.wojucai.dao.ClientRepository;
+import com.wojucai.dao.ScopePropertyRepository;
+import com.wojucai.dao.ScopeRepository;
 import com.wojucai.entity.po.Client;
+import com.wojucai.entity.po.Scope;
+import com.wojucai.entity.po.ScopeProperty;
 import com.wojucai.entity.reqParam.ClientQuery;
 import com.wojucai.service.ClientService;
 import com.wojucai.util.TextUtils;
@@ -11,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +34,10 @@ public class ClientServiceImpl extends AbstractImpl implements ClientService {
     private ClientRepository clientRepository;
     @Autowired
     private ClientConverter converter;
+    @Resource
+    private ScopePropertyRepository scopePropertyRepository;
+    @Resource
+    private ScopeRepository scopeRepository;
 
     @Override
     public Page<ClientVo> queryByClientName(ClientQuery clientQuery) {
@@ -62,6 +71,24 @@ public class ClientServiceImpl extends AbstractImpl implements ClientService {
         client.setEnable(enable);
         Client save = clientRepository.save(client);
         return save == null ? 0 : 1;
+    }
+
+    @Override
+    public List<Scope> queryForScope() {
+        List<Scope> scopes = scopeRepository.findAll();
+        if (scopes == null) {
+            scopes = new ArrayList<>();
+        }
+        return scopes;
+    }
+
+    @Override
+    public List<ScopeProperty> queryScopeProperty(Integer id) {
+        List<ScopeProperty> scopeProperties = scopePropertyRepository.findByClassId(id);
+        if (scopeProperties == null) {
+            scopeProperties = new ArrayList<>();
+        }
+        return scopeProperties;
     }
 
     @Override

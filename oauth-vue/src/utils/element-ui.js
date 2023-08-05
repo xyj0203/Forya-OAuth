@@ -39,7 +39,8 @@ import {
   TimePicker,
   Switch,
   CheckboxGroup,
-  Select
+  Select,
+  CascaderPanel
 } from 'element-ui'
 
 Vue.use(Breadcrumb)
@@ -80,6 +81,7 @@ Vue.use(TimePicker)
 Vue.use(Switch)
 Vue.use(CheckboxGroup)
 Vue.use(Select)
+Vue.use(CascaderPanel)
 Vue.prototype.$loading = Loading.service
 Vue.prototype.$msgbox = MessageBox
 Vue.prototype.$alert = MessageBox.alert

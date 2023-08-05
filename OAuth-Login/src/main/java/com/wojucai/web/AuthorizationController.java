@@ -89,7 +89,6 @@ public class AuthorizationController {
 				.bodyToMono(String[].class)
 				.block();
 		model.addAttribute("messages", messages);
-
 		return "index";
 	}
 }

@@ -2,6 +2,8 @@ package com.wojucai.export.api;
 
 import com.wojucai.Result;
 import com.wojucai.entity.po.Client;
+import com.wojucai.entity.po.Scope;
+import com.wojucai.entity.po.ScopeProperty;
 import com.wojucai.entity.reqParam.ClientQuery;
 import com.wojucai.entity.validate.CheckId;
 import com.wojucai.entity.validate.CheckString;
@@ -100,5 +102,19 @@ public class ClientController {
         }
         Integer i = clientService.changeEnable(id, enable);
         return i == 1 ? Result.success(ResultEnum.RequestSuccess) : Result.fail("客户端不存在");
+    }
+
+    @ApiOperation("/查询作用域")
+    @GetMapping("/queryScope")
+    public Result queryScope() {
+        List<Scope> scopes = clientService.queryForScope();
+        return Result.success(scopes);
+    }
+
+    @ApiOperation("/查询作用域的属性")
+    @GetMapping("/queryScopeProperty/{id}")
+    public Result queryScopeProperty(@NotNull(message = "id不能为空") @PathVariable("id") Integer id) {
+        List<ScopeProperty> ScopeProperties = clientService.queryScopeProperty(id);
+        return Result.success(ScopeProperties);
     }
 }

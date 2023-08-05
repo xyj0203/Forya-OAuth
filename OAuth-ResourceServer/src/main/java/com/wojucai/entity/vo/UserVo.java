@@ -17,8 +17,6 @@ public class UserVo {
     /**
      * 用户Id
      */
-    @Id
-    @GeneratedValue
     private Long userId;
 
     /**

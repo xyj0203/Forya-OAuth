@@ -82,4 +82,19 @@ public interface ClientService {
      */
     @PutMapping("/client/changeEnable")
     Result changeEnable(@RequestParam("id") Integer id, @RequestParam("enable") Integer enable);
+
+    /**
+     * 查询作用域
+     * @return
+     */
+    @GetMapping("/client/queryScope")
+    Result queryScope();
+
+    /**
+     * 查询作用域集合
+     * @param id
+     * @return
+     */
+    @GetMapping("/client/queryScopeProperty/{id}")
+    Result queryScopeProperty(@PathVariable(value = "id") Integer id);
 }

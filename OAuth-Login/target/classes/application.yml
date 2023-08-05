@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8083
 
 logging:
   level:
@@ -43,5 +43,5 @@ spring:
           spring:
             issuer-uri: http://localhost:9000
 
-messages:
-  base-uri: http://127.0.0.1:8090/messages
+resource-server:
+  base-uri: http://127.0.0.1:8082/api/

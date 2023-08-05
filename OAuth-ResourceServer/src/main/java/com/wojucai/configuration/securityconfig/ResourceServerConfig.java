@@ -16,13 +16,14 @@ public class ResourceServerConfig {
     // @formatter:off
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .mvcMatcher("/**")
-                .authorizeRequests()
-                .mvcMatchers("/**").access("hasAuthority('SCOPE_message.read')")
-                .and()
-                .oauth2ResourceServer()
-                .jwt();
+//        http
+//                .mvcMatcher("/**")
+//                .authorizeRequests()
+//                .mvcMatchers("/**").access("hasAuthority('SCOPE_message.read')")
+//                .and()
+//                .oauth2ResourceServer()
+//                .jwt();
+        http.mvcMatcher("/api/**").authorizeRequests().anyRequest().permitAll();
         return http.build();
     }
 }

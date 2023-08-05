@@ -51,25 +51,26 @@ public class AuthorizationServerConfig {
 	@Bean
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
-		OAuth2AuthorizationServerConfigurer<HttpSecurity> authorizationServerConfigurer =
-				new OAuth2AuthorizationServerConfigurer<>();
-		authorizationServerConfigurer
-				.authorizationEndpoint(authorizationEndpoint ->
-						authorizationEndpoint.consentPage(CUSTOM_CONSENT_PAGE_URI));
-
-		RequestMatcher endpointsMatcher = authorizationServerConfigurer
-				.getEndpointsMatcher();
-
-		http
-			.requestMatcher(endpointsMatcher)
-			.authorizeRequests(authorizeRequests ->
-				authorizeRequests.anyRequest().authenticated()
-			)
-			.csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
-			.exceptionHandling(exceptions ->
-				exceptions.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
-			)
-			.apply(authorizationServerConfigurer);
+//		OAuth2AuthorizationServerConfigurer<HttpSecurity> authorizationServerConfigurer =
+//				new OAuth2AuthorizationServerConfigurer<>();
+//		authorizationServerConfigurer
+//				.authorizationEndpoint(authorizationEndpoint ->
+//						authorizationEndpoint.consentPage(CUSTOM_CONSENT_PAGE_URI));
+//
+//		RequestMatcher endpointsMatcher = authorizationServerConfigurer
+//				.getEndpointsMatcher();
+//
+//		http
+//			.requestMatcher(endpointsMatcher)
+//			.authorizeRequests(authorizeRequests ->
+//				authorizeRequests.anyRequest().authenticated()
+//			)
+//			.csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
+//			.exceptionHandling(exceptions ->
+//				exceptions.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
+//			)
+//			.apply(authorizationServerConfigurer);
+		http.authorizeRequests().anyRequest().permitAll().and().csrf().disable();
 		return http.build();
 	}
 

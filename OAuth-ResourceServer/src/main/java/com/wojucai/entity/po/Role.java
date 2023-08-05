@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tb_role")
-public class Role {
+public class Role extends BaseEntity {
 
     /**
      * 主键

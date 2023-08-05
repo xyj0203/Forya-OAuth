@@ -51,6 +51,12 @@ public class OauthController {
         return oauthService.userLogin(username, password,request);
     }
 
+    @PostMapping("/demo")
+    @ResponseBody
+    public Result test() throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
+        return new Result();
+    }
+
     @GetMapping("userLogout")
     @ResponseBody
     public Result userLogout(HttpServletRequest request) {
