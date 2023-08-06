@@ -40,7 +40,8 @@ import {
   Switch,
   CheckboxGroup,
   Select,
-  CascaderPanel
+  CascaderPanel,
+  Cascader
 } from 'element-ui'
 
 Vue.use(Breadcrumb)
@@ -82,6 +83,7 @@ Vue.use(Switch)
 Vue.use(CheckboxGroup)
 Vue.use(Select)
 Vue.use(CascaderPanel)
+Vue.use(Cascader)
 Vue.prototype.$loading = Loading.service
 Vue.prototype.$msgbox = MessageBox
 Vue.prototype.$alert = MessageBox.alert

@@ -9,6 +9,7 @@ import com.wojucai.entity.validate.CheckId;
 import com.wojucai.entity.validate.CheckString;
 import com.wojucai.entity.validate.Update;
 import com.wojucai.entity.vo.ClientVo;
+import com.wojucai.entity.vo.ScopeVo;
 import com.wojucai.enums.ResultEnum;
 import com.wojucai.service.ClientService;
 import io.swagger.annotations.Api;
@@ -104,17 +105,10 @@ public class ClientController {
         return i == 1 ? Result.success(ResultEnum.RequestSuccess) : Result.fail("客户端不存在");
     }
 
-    @ApiOperation("/查询作用域")
-    @GetMapping("/queryScope")
+    @ApiOperation("查询作用域")
+    @GetMapping("queryScopeAll")
     public Result queryScope() {
-        List<Scope> scopes = clientService.queryForScope();
+        List<ScopeVo> scopes = clientService.queryScopeAll();
         return Result.success(scopes);
-    }
-
-    @ApiOperation("/查询作用域的属性")
-    @GetMapping("/queryScopeProperty/{id}")
-    public Result queryScopeProperty(@NotNull(message = "id不能为空") @PathVariable("id") Integer id) {
-        List<ScopeProperty> ScopeProperties = clientService.queryScopeProperty(id);
-        return Result.success(ScopeProperties);
     }
 }

@@ -29,12 +29,8 @@ const client = {
     method: 'put',
     data: obj
   }),
-  queryScope: () => axios({
-    url: '/client/queryScope',
-    method: 'get'
-  }),
-  queryScopeProperty: (id) => axios({
-    url: `/client/queryScopeProperty/${id}`,
+  queryScopeAll: () => axios({
+    url: '/client/queryScopeAll',
     method: 'get'
   })
 }

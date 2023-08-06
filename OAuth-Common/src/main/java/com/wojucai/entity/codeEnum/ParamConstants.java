@@ -30,4 +30,14 @@ public class ParamConstants {
      * 倒序
      */
     public static final String DESC = "DESC";
+
+    /**
+     * 读权限
+     */
+    public static final String READ = "读权限";
+
+    /**
+     * 写权限
+     */
+    public static final String WRITE = "写权限";
 }

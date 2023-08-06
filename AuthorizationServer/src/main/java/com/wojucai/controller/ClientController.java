@@ -78,14 +78,8 @@ public class ClientController {
     }
 
     @ApiOperation("/查询作用域")
-    @GetMapping("/queryScope")
-    public Result queryScope() {
-        return clientService.queryScope();
-    }
-
-    @ApiOperation("/查询作用域的属性")
-    @GetMapping("/queryScopeProperty/{id}")
-    public Result queryScopeProperty(@NotNull(message = "id不能为空") @PathVariable("id") Integer id) {
-        return clientService.queryScopeProperty(id);
+    @GetMapping("queryScopeAll")
+    public Result queryAll() {
+        return clientService.queryScopeAll();
     }
 }

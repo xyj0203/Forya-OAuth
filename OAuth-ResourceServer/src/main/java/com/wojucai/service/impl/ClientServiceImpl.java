@@ -3,14 +3,17 @@ package com.wojucai.service.impl;
 import com.wojucai.dao.ClientRepository;
 import com.wojucai.dao.ScopePropertyRepository;
 import com.wojucai.dao.ScopeRepository;
+import com.wojucai.entity.Bo.ScopeBo;
 import com.wojucai.entity.po.Client;
 import com.wojucai.entity.po.Scope;
 import com.wojucai.entity.po.ScopeProperty;
 import com.wojucai.entity.reqParam.ClientQuery;
+import com.wojucai.entity.vo.ScopeVo;
 import com.wojucai.service.ClientService;
 import com.wojucai.util.TextUtils;
 import com.wojucai.util.converter.ClientConverter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,9 @@ import java.util.List;
 import java.util.Optional;
 
 import com.wojucai.entity.vo.ClientVo;
+
+import static com.wojucai.entity.codeEnum.ParamConstants.READ;
+import static com.wojucai.entity.codeEnum.ParamConstants.WRITE;
 
 /**
  * @description:客户端服务实现类
@@ -74,21 +80,30 @@ public class ClientServiceImpl extends AbstractImpl implements ClientService {
     }
 
     @Override
-    public List<Scope> queryForScope() {
-        List<Scope> scopes = scopeRepository.findAll();
-        if (scopes == null) {
-            scopes = new ArrayList<>();
+    public List<ScopeVo> queryScopeAll() {
+        List<Scope> all = scopeRepository.findAll();
+        List<ScopeVo> res = new ArrayList<>(all.size());
+        for (Scope scope : all) {
+            ScopeVo scopeVo = new ScopeVo();
+            BeanUtils.copyProperties(scope, scopeVo);
+            List<ScopeProperty> scopeProperties = scopePropertyRepository.findByClassId(scope.getId());
+            ScopeBo scopeRead = new ScopeBo(scope.getId(), READ, new ArrayList<ScopeProperty>());
+            ScopeBo scopeWrite = new ScopeBo(scope.getId(), WRITE, new ArrayList<ScopeProperty>());
+            scopeProperties.forEach(scopeProperty -> {
+                scopeProperty.setCreateTime(null);
+                scopeProperty.setUpdateTime(null);
+                if (scopeProperty.getBehavior() == 1) {
+                    scopeWrite.getScopeList().add(scopeProperty);
+                } else {
+                    scopeRead.getScopeList().add(scopeProperty);
+                }
+            });
+            scopeVo.setScopeRead(scopeRead);
+            scopeVo.setScopeWrite(scopeWrite);
+            res.add(scopeVo);
         }
-        return scopes;
-    }
-
-    @Override
-    public List<ScopeProperty> queryScopeProperty(Integer id) {
-        List<ScopeProperty> scopeProperties = scopePropertyRepository.findByClassId(id);
-        if (scopeProperties == null) {
-            scopeProperties = new ArrayList<>();
-        }
-        return scopeProperties;
+        System.out.println(res);
+        return res;
     }
 
     @Override

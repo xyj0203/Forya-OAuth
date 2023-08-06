@@ -36,9 +36,4 @@ public class ClientServiceImplTest {
         System.out.println(page.getContent());
     }
 
-    @Test
-    public void testQueryForScopes() {
-        List<Scope> scopes = clientService.queryForScope();
-        System.out.println(scopes);
-    }
 }

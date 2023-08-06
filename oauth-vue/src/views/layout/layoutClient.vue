@@ -82,7 +82,7 @@
     <el-input v-model="client.clientName"></el-input>
   </el-form-item>
   <el-form-item label="重定向链接" prop="redirectUrl">
-    <el-input type="textarea" v-model="client.description"></el-input>
+    <el-input type="textarea" v-model="client.redirectUrl"></el-input>
   </el-form-item>
   <el-form-item label="客户端ID" prop="clientId">
     <el-input :disabled=" true"  v-model="client.clientId"></el-input>
@@ -90,8 +90,8 @@
   <el-form-item label="启用" prop="enable" required>
     <el-switch v-model="client.enable"></el-switch>
   </el-form-item>
-  <el-form-item label="Scope" prop="type">
-    <el-cascader-panel :options="options"></el-cascader-panel>
+  <el-form-item label="Scope" prop="scope">
+    <el-cascader ref="cascader" :props="props" :options="options" @change="handleChange" collapse-tags clearable></el-cascader>
   </el-form-item>
   <el-form-item label="客户端描述" prop="description">
     <el-input type="textarea" v-model="client.description"></el-input>
@@ -110,16 +110,16 @@
     <el-input v-model="client.clientName"></el-input>
   </el-form-item>
   <el-form-item label="重定向链接" prop="redirectUrl">
-    <el-input type="textarea" v-model="client.description"></el-input>
+    <el-input type="textarea" v-model="client.redirectUrl"></el-input>
   </el-form-item>
   <el-form-item label="客户端ID" prop="clientId">
     <el-input :disabled=" true"  v-model="client.clientId"></el-input>
   </el-form-item>
-  <el-form-item label="启用" prop="enable" required>
+  <el-form-item label="启用" prop="enable">
     <el-switch v-model="client.enable"></el-switch>
   </el-form-item>
-  <el-form-item label="Scope" prop="type">
-    <el-cascader-panel :options="options" :props="cascaderProps"></el-cascader-panel>
+  <el-form-item label="Scope" prop="scope">
+    <el-cascader ref="cascader" :props="props" :options="options" @change="handleChange" collapse-tags clearable></el-cascader>
   </el-form-item>
   <el-form-item label="客户端描述" prop="description">
     <el-input type="textarea" v-model="client.description"></el-input>
@@ -149,8 +149,12 @@
 import client from '@/api/client/client'
 export default {
   data () {
-    const that = this
     return {
+      options: [
+      ],
+      props: {
+        multiple: true
+      },
       currentPage: 1,
       pageNumber: 10,
       total: 0,
@@ -165,60 +169,62 @@ export default {
           { required: true, message: '请输入客户端名称', trigger: 'blur' },
           { min: 5, max: 20, message: '长度在 5 到 20 个字符', trigger: 'blur' }
         ]
-      },
-      /** 配置级联面板 */
-      cascaderProps: {
-        multiple: true,
-        lazy: true,
-        lazyLoad (node, resolve) {
-          const { value } = node
-          setTimeout(() => {
-            const nodes = that.queryScopeProperty(value)
-            // 通过调用resolve将子节点数据返回，通知组件数据加载完成
-            nodes.then(res => {
-              console.log(Array.from(res))
-              resolve(Array.from(res))
-            })
-          }, 1000)
-        }
-      },
-      options: [
-      ]
+      }
     }
   },
   methods: {
-    async queryScopeProperty (id) {
-      const { data } = await client.queryScopeProperty(id)
-      const nodes = []
+    // 初始化级联操作表
+    handleChange () {
+      const nodesInfo = this.$refs.cascader.getCheckedNodes(true)
+      const scope = []
+      for (const node of nodesInfo) {
+        scope.push(node.value)
+      }
+      this.client.scope = scope.toString()
+    },
+    async handleCascader () {
+      const { data } = await client.queryScopeAll()
       if (data.code === 10000) {
         const { object } = data
+        console.log(object)
         for (const obj of object) {
-          nodes.push({
-            value: obj.id,
-            label: obj.description + (obj.behavior === 0 ? '-读' : '-写'),
-            leaf: true
-          })
+          const tmp = { value: obj.id, label: obj.scopeDescription }
+          console.log(obj)
+          // 定义孩子节点
+          const children = []
+          const read = { value: obj.scopeRead.id, label: obj.scopeRead.scopePermission }
+          const write = { value: obj.scopeWrite.id, label: obj.scopeWrite.scopePermission }
+          const readChildren = []
+          for (const obj1 of obj.scopeRead.scopeList) {
+            readChildren.push({ value: obj1.id, label: obj1.description })
+          }
+          read.children = readChildren
+          const writeChildren = []
+          for (const obj1 of obj.scopeWrite.scopeList) {
+            writeChildren.push({ value: obj1.id, label: obj1.description })
+          }
+          write.children = writeChildren
+          // 压入数组中
+          children.push(read)
+          children.push(write)
+          tmp.children = children
+          this.options.push(tmp)
         }
-      }
-      return nodes
-    },
-    async queryScope () {
-      const { data } = await client.queryScope()
-      if (data.code === 10000) {
-        const { object } = data
-        for (const obj of object) {
-          this.options.push({ value: obj.id, label: obj.scopeDescription, leaf: false })
-        }
+        console.log(this.options)
       }
     },
+
     async onAdd () {
-      const obj = Object.assign({}, client)
+      const obj = Object.assign({}, this.client)
+      obj.enable = obj.enable ? 1 : 0
       this.client = {}
       await client.insertClient(obj)
     },
     async onUpdate () {
-      const obj = Object.assign({}, client)
+      const obj = Object.assign({}, this.client)
+      obj.enable = obj.enable ? 1 : 0
       this.client = {}
+      console.log(obj)
       await client.updateClient(obj)
     },
     handleEdit (client) {
@@ -272,6 +278,7 @@ export default {
     cancle () {
       this.formAdd = false
       this.formEdit = false
+      this.client = {}
     },
     getAll () {
       return client.findAll(this.currentPage, this.pageNumber)
@@ -314,7 +321,7 @@ export default {
   },
   mounted: function () {
     this.init()
-    this.queryScope()
+    this.handleCascader()
   }
 }
 </script>

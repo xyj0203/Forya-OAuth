@@ -6,6 +6,7 @@ import com.wojucai.entity.po.Scope;
 import com.wojucai.entity.po.ScopeProperty;
 import com.wojucai.entity.reqParam.ClientQuery;
 import com.wojucai.entity.vo.ClientVo;
+import com.wojucai.entity.vo.ScopeVo;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -69,15 +70,8 @@ public interface ClientService {
     Integer changeEnable(Integer id, Integer enable);
 
     /**
-     * 查询所有的作用域
+     * 查询所有作用域
      * @return
      */
-    List<Scope> queryForScope();
-
-    /**
-     * 查询作用域的全部属性
-     * @param id
-     * @return
-     */
-    List<ScopeProperty> queryScopeProperty(Integer id);
+    List<ScopeVo> queryScopeAll();
 }
