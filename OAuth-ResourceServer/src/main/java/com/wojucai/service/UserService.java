@@ -62,4 +62,11 @@ public interface UserService {
      * @return
      */
     Page<UserVo> queryAll(UserQuery userQuery);
+
+    /**
+     * 查询用户信息
+     * @param userQuery
+     * @return
+     */
+    UserVo queryUserInfo(UserQuery userQuery);
 }

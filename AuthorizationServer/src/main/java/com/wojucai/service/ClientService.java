@@ -89,4 +89,12 @@ public interface ClientService {
      */
     @GetMapping("/client/queryScopeAll")
     Result queryScopeAll();
+
+    /**
+     * 根据客户端Id查询客户端
+     * @param clientId
+     * @return
+     */
+    @GetMapping("/client/queryClientById/{clientId}")
+    Result queryClientById(@PathVariable(value = "clientId")String clientId);
 }

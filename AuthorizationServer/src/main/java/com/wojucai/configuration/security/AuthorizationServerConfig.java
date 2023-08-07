@@ -74,7 +74,7 @@ public class AuthorizationServerConfig {
 		return http.build();
 	}
 
-	// @formatter:off
+
 	@Bean
 	public RegisteredClientRepository registeredClientRepository() {
 		RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
@@ -93,7 +93,7 @@ public class AuthorizationServerConfig {
 				.build();
 		return new InMemoryRegisteredClientRepository(registeredClient);
 	}
-	// @formatter:on
+
 
 	@Bean
 	public JWKSource<SecurityContext> jwkSource() {
@@ -112,5 +112,4 @@ public class AuthorizationServerConfig {
 		// Will be used by the ConsentController
 		return new InMemoryOAuth2AuthorizationConsentService();
 	}
-
 }

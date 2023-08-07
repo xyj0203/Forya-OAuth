@@ -94,4 +94,11 @@ public class UserController {
         Page<UserVo> userVos = userService.queryAll(clientQuery);
         return userVos != null ? Result.success(userVos) : Result.fail("数据为空");
     }
+
+    @ApiOperation("通过用户账号查询")
+    @GetMapping("/queryUserInfo")
+    public Result queryUserInfo(@Validated(value = CheckString.class) @RequestBody UserQuery userQuery) {
+        UserVo Users = userService.queryUserInfo(userQuery);
+        return Users != null ? Result.success(Users, ResultEnum.RequestSuccess) : Result.fail(ResultEnum.UserNotExist);
+    }
 }

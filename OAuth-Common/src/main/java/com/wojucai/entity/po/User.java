@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 /**
  * @description:用户实体类
@@ -34,6 +35,16 @@ public class User extends BaseEntity{
      */
     @PropertyAnnotations(description = "用户名", behavior = 1)
     private String username;
+
+    /**
+     * 昵称
+     */
+    private String nickName;
+
+    /**
+     * 生日
+     */
+    private LocalDateTime birthdate;
 
     /**
      * 密码

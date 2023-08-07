@@ -69,4 +69,14 @@ public class UserServiceImpl extends AbstractImpl implements UserService {
     public Page<UserVo> queryAll(UserQuery userQuery) {
         return query(userQuery, null, null, userConverter, userRepository);
     }
+
+    @Override
+    public UserVo queryUserInfo(UserQuery userQuery) {
+        User user = new User();
+        user.setUsername(userQuery.getUsername());
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withStringMatcher(ExampleMatcher.StringMatcher.EXACT)
+                .withMatcher("username", matcher1 -> matcher1.exact());
+        return queryForOne(user, matcher, userConverter, userRepository);
+    }
 }

@@ -1,11 +1,10 @@
 package com.wojucai.entity.vo;
 
+
 import com.wojucai.entity.po.Role;
 import lombok.Data;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 /**
  * @description:User的视图对象
@@ -23,6 +22,16 @@ public class UserVo {
      * 用户名
      */
     private String username;
+
+    /**
+     * 昵称
+     */
+    private String nickName;
+
+    /**
+     * 生日
+     */
+    private LocalDateTime birthdate;
 
     /**
      * 用户头像

@@ -5,6 +5,8 @@ import com.wojucai.entity.reqParam.PageQuery;
 import com.wojucai.util.SortUtil;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -34,5 +36,16 @@ public abstract class AbstractImpl {
         // 将Client转换为ClientVo
         Page<R> returnPage = pageList.map(converter);
         return returnPage;
+    }
+
+    public <T, R> R queryForOne (T entity, ExampleMatcher exampleMatcher, Function<T,R> converter, JpaRepository jpaRepository) {
+        Example<T> example = Example.of(entity, exampleMatcher);
+        Optional<T> optional = jpaRepository.findOne(example);
+        T t = optional.get();
+        R res = null;
+        if (t != null) {
+            res = converter.apply(t);
+        }
+        return res;
     }
 }

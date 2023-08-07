@@ -43,6 +43,15 @@ public class AuthorizationConsentController {
 		this.authorizationConsentService = authorizationConsentService;
 	}
 
+	/**
+	 * 授权访问
+	 * @param principal 认证权限
+	 * @param model 视图对象
+	 * @param clientId 客户端索引
+	 * @param scope 作用域
+	 * @param state 状态码
+	 * @return
+	 */
 	@GetMapping(value = "/oauth2/consent")
 	public String consent(Principal principal, Model model,
 			@RequestParam(OAuth2ParameterNames.CLIENT_ID) String clientId,
@@ -52,29 +61,60 @@ public class AuthorizationConsentController {
 		// Remove scopes that were already approved
 		Set<String> scopesToApprove = new HashSet<>();
 		Set<String> previouslyApprovedScopes = new HashSet<>();
+		// 根据ClientID获取对应的客户端对象
 		RegisteredClient registeredClient = this.registeredClientRepository.findByClientId(clientId);
 		OAuth2AuthorizationConsent currentAuthorizationConsent =
 				this.authorizationConsentService.findById(registeredClient.getId(), principal.getName());
 		Set<String> authorizedScopes;
+		// 当前的不为空
 		if (currentAuthorizationConsent != null) {
 			authorizedScopes = currentAuthorizationConsent.getScopes();
 		} else {
+			// 当前的为空
 			authorizedScopes = Collections.emptySet();
 		}
+		// 通过定界符将List转为数组
 		for (String requestedScope : StringUtils.delimitedListToStringArray(scope, " ")) {
+			// 如果已经认证的作用域包含
 			if (authorizedScopes.contains(requestedScope)) {
+				// 添加到先前的
 				previouslyApprovedScopes.add(requestedScope);
 			} else {
+				// 添加到现在的
 				scopesToApprove.add(requestedScope);
 			}
 		}
 
+		// 客户端ID
 		model.addAttribute("clientId", clientId);
+		// 状态码
 		model.addAttribute("state", state);
+		// 现在同意的作用域
 		model.addAttribute("scopes", withDescription(scopesToApprove));
+		// 先前支持的作用域
 		model.addAttribute("previouslyApprovedScopes", withDescription(previouslyApprovedScopes));
 		model.addAttribute("principalName", principal.getName());
 
+		return "consent";
+	}
+
+	/**
+	 * 授权访问
+	 * @param principal 认证权限
+	 * @param clientId 客户端索引
+	 * @param scope 作用域
+	 * @param state 状态码
+	 * @return
+	 */
+	@GetMapping(value = "/oauth2/consent")
+	public String test(Principal principal,
+						  @RequestParam(OAuth2ParameterNames.CLIENT_ID) String clientId,
+						  @RequestParam(OAuth2ParameterNames.SCOPE) String scope,
+						  @RequestParam(OAuth2ParameterNames.STATE) String state) {
+
+		Set<String> scopesToApprove = new HashSet<>();
+		Set<String> previouslyApprovedScopes = new HashSet<>();
+		RegisteredClient registeredClient = this.registeredClientRepository.findByClientId(clientId);
 		return "consent";
 	}
 
@@ -87,6 +127,9 @@ public class AuthorizationConsentController {
 		return scopeWithDescriptions;
 	}
 
+	/**
+	 * 修饰作用域
+	 */
 	public static class ScopeWithDescription {
 		private static final String DEFAULT_DESCRIPTION = "UNKNOWN SCOPE - We cannot provide information about this permission, use caution when granting this.";
 		private static final Map<String, String> scopeDescriptions = new HashMap<>();
@@ -113,4 +156,6 @@ public class AuthorizationConsentController {
 			this.description = scopeDescriptions.getOrDefault(scope, DEFAULT_DESCRIPTION);
 		}
 	}
+
+
 }
