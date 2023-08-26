@@ -1,9 +1,13 @@
 package com.wojucai.entity.vo;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.wojucai.entity.po.Role;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -13,6 +17,7 @@ import java.time.LocalDateTime;
  **/
 @Data
 public class UserVo {
+
     /**
      * 用户Id
      */
@@ -31,7 +36,9 @@ public class UserVo {
     /**
      * 生日
      */
-    private LocalDateTime birthdate;
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate birthday;
 
     /**
      * 用户头像
@@ -56,12 +63,12 @@ public class UserVo {
     /**
      * 插入时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 角色

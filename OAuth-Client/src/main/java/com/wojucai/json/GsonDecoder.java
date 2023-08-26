@@ -50,6 +50,7 @@ public class GsonDecoder implements Decoder {
             if (e.getCause() != null && e.getCause() instanceof IOException) {
                 throw IOException.class.cast(e.getCause());
             }
+            e.printStackTrace();
             throw e;
         } finally {
             ensureClosed(reader);

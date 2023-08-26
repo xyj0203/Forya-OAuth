@@ -32,4 +32,5 @@ public class GsonEncoder implements Encoder{
     public void encode(Object object, Type bodyType, RequestTemplate template) {
         template.body(gson.toJson(object, bodyType));
     }
+
 }

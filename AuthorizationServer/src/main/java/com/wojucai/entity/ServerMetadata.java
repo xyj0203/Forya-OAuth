@@ -3,6 +3,7 @@ package com.wojucai.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.Set;
 
@@ -14,6 +15,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ConfigurationProperties("oauth.metadata")
 public class ServerMetadata {
     /**
      *  REQUIRED.  The authorization server's issuer identifier, which is
@@ -31,7 +33,7 @@ public class ServerMetadata {
      *       [RFC6749].  This is REQUIRED unless no grant types are supported
      *       that use the authorization endpoint.
      */
-    private String authorization_endpoint = "http://localhost:10086/oauth/2.0/authorize";
+    private String authorization_endpoint;
     /**
      * URL of the authorization server's token endpoint [RFC6749].  This
      *       is REQUIRED unless only the implicit grant type is supported.

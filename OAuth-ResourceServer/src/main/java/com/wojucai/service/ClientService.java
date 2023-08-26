@@ -6,8 +6,10 @@ import com.wojucai.entity.po.Scope;
 import com.wojucai.entity.po.ScopeProperty;
 import com.wojucai.entity.reqParam.ClientQuery;
 import com.wojucai.entity.vo.ClientVo;
+import com.wojucai.entity.vo.ConsentVo;
 import com.wojucai.entity.vo.ScopeVo;
 import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -74,4 +76,26 @@ public interface ClientService {
      * @return
      */
     List<ScopeVo> queryScopeAll();
+
+    /**
+     * 查询已经授权的consent
+     * @return
+     */
+    List<Integer> queryConsent(String clientId, Long userId);
+
+    /**
+     * 查询客户端拥有的授权
+     * @param clientId
+     * @return
+     */
+    List<ConsentVo> queryClientScope(String clientId);
+
+    /**
+     * 通过id查询客户端
+     * @param id
+     * @return
+     */
+    Client queryClientById(String id);
+
+
 }

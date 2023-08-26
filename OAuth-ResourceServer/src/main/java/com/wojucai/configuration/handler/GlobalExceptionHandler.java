@@ -1,5 +1,6 @@
 package com.wojucai.configuration.handler;
 
+import com.wojucai.OAuthClientException;
 import com.wojucai.Result;
 import com.wojucai.exception.BizException;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +11,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.util.List;
+import java.util.Set;
 
 import static com.wojucai.enums.ResultEnum.BODY_NOT_MATCH;
 import static com.wojucai.enums.ResultEnum.INTERNAL_SERVER_ERROR;
@@ -58,7 +62,30 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = IllegalArgumentException.class)
     @ResponseBody
     public Result exceptionHandler(IllegalArgumentException e) {
+        e.printStackTrace();
         return Result.fail("参数不合法");
+    }
+
+    /**
+     * 处理其他异常
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(value =OAuthClientException.class)
+    @ResponseBody
+    public Result exceptionHandler(OAuthClientException e){
+        return Result.fail(e.getMessage());
+    }
+
+    /**
+     * 处理其他异常
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(value =ConstraintViolationException.class)
+    @ResponseBody
+    public Result exceptionHandler(ConstraintViolationException e){
+        return Result.fail(e.getMessage());
     }
 
     /**

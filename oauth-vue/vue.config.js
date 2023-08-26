@@ -10,9 +10,10 @@ module.exports = defineConfig({
         changeOrigin: true,
         followRedirects: true,
         pathRewrite: {
-          '^/api': '/'
+          '^/api': ''
         }
       }
     }
-  }
+  },
+  publicPath: '/'
 })

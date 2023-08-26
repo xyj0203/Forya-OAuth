@@ -1,6 +1,7 @@
 package com.wojucai.dao;
 
 import com.wojucai.entity.po.Client;
+import com.wojucai.entity.po.Consent;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +13,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Integer> {
 
+    Client findByClientId(String clientId);
 }

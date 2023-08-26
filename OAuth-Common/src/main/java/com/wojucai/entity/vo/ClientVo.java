@@ -42,7 +42,7 @@ public class ClientVo extends BaseEntity {
     /**
      * 拥有的作用域
      */
-    private List<String> scope;
+    private List<Integer> scope;
 
     /**
      * 对于此客户端的描述

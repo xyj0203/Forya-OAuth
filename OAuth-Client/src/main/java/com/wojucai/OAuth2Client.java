@@ -1,28 +1,29 @@
 package com.wojucai;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.google.gson.Gson;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.crypto.ECDSAVerifier;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jose.jwk.ECKey;
 import com.nimbusds.jose.jwk.RSAKey;
+import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
 import com.wojucai.bean.metadata.OAuthService;
 import com.wojucai.bean.metadata.ServerMetadata;
 import com.wojucai.bean.metadata.TokenResponse;
+import com.wojucai.entity.po.Authorization;
+import com.wojucai.entity.po.AuthorizationCode;
 import com.wojucai.util.TextUtils;
 import feign.Feign;
 import org.apache.hc.core5.net.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.net.URISyntaxException;
 import java.text.ParseException;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 /**
  * @description: 客户端
@@ -63,14 +64,19 @@ public class OAuth2Client extends BaseClient{
     private final Map<String, String> states = new ConcurrentHashMap<>();
 
     /**
+     * 获取服务器信息的地址
+     */
+    private String metaUri = "http://localhost:8081";
+
+    private OAuthService serverMeta = Feign.builder()
+            .decoder(gsonDecoder)
+            .encoder(gsonEncoder)
+            .target(OAuthService.class, metaUri);
+
+    /**
      * OAuth 2.0 服务器元信息，可自动获取
      */
     private ServerMetadata serverMetadata;
-
-    /**
-     * 获取服务器信息的地址
-     */
-    private String metaUri = "http://localhost:10086";
 
     /**
      * 构造器
@@ -79,9 +85,8 @@ public class OAuth2Client extends BaseClient{
      * @param clientId
      * @param clientSecret
      * @param redirectUri
-     * @param jsonMapper
      */
-    public OAuth2Client(String clientId, String clientSecret, String redirectUri, JsonMapper jsonMapper) {
+    public OAuth2Client(String clientId, String clientSecret, String redirectUri) {
         this.clientId = Objects.requireNonNull(clientId, "clientId 不能为空");
         this.clientSecret = Objects.requireNonNull(clientSecret, "clientSecret 不能为空");
         this.redirectUri = Objects.requireNonNull(redirectUri, "redirectUri 不能为空");
@@ -91,12 +96,10 @@ public class OAuth2Client extends BaseClient{
     /**
      * 构造登录链接
      * @param redirectUri 回调地址， 诱导用户获取code参数
-     * @param scopes 请求的权限
      * @return 链接
      * @throws URISyntaxException
      */
-    public String getLoginLink(String redirectUri, Set<Scopes> scopes) throws URISyntaxException {
-        Objects.requireNonNull(scopes, "scopes must not be null");
+    public String getLoginLink(String redirectUri) throws URISyntaxException {
         ensureServerMetadata();
         if (redirectUri == null) {
             redirectUri = this.redirectUri;
@@ -109,12 +112,19 @@ public class OAuth2Client extends BaseClient{
                 .addParameter("client_id", clientId)
                 .addParameter("redirect_uri", redirectUri)
                 .addParameter("state", state)
-                .addParameter("scope", scopes.stream()
-                        .map(Scopes::getTitle)
-                        .collect(Collectors.joining(" ")))
+                .addParameter("client_secret",clientSecret)
                 .addParameter("response_type", "code")
                 .normalizeSyntax()
                 .toString();
+    }
+
+    /**
+     * 构造登录链接
+     * @return 链接
+     * @throws URISyntaxException
+     */
+    public String getLoginLink() throws URISyntaxException {
+        return getLoginLink(this.redirectUri);
     }
 
     /**
@@ -124,9 +134,6 @@ public class OAuth2Client extends BaseClient{
         if (serverMetadata != null) {
             return;
         }
-        OAuthService serverMeta = Feign.builder()
-                        .decoder(gsonDecoder)
-                                .target(OAuthService.class, metaUri);
         serverMetadata = serverMeta.getServerMetadata();
         log.debug("Got ServerMetadata: {}", serverMetadata);
     }
@@ -155,6 +162,30 @@ public class OAuth2Client extends BaseClient{
             throw new OAuthClientException("Invalid state retired: " + state);
         }
         return null;
+    }
+
+    public Authorization getAuthorization(String token) {
+        if (!verifyToken(token)) {
+            throw new OAuthClientException("not valid token");
+        }
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(token);
+            Authorization authorizationCode = new Authorization();
+            JWTClaimsSet jwtClaimsSet = signedJWT.getJWTClaimsSet();
+            authorizationCode.setUserId(Long.parseLong(jwtClaimsSet.getSubject()));
+            List<Long> list = (List<Long>) jwtClaimsSet.getClaim("scp");
+            List<Integer> scope = new ArrayList<>(list.size());
+            list.forEach(
+                    i ->
+                            scope.add(i.intValue())
+            );
+            authorizationCode.setScope(scope);
+            authorizationCode.setRole(((Long)jwtClaimsSet.getClaim("role")).toString());
+            return authorizationCode;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new OAuthClientException("not valid token");
+        }
     }
 
     public String getClientId() {
@@ -224,24 +255,66 @@ public class OAuth2Client extends BaseClient{
                 '}';
     }
 
+    public boolean verifyToken(String token) {
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(Objects.requireNonNull(token,
+                    "token must not be null"));
+            return verifyToken(signedJWT);
+        } catch (java.text.ParseException e) {
+            log.debug("Unable to parse the token: ", e);
+            return false;
+        }
+    }
+
+    public boolean verifyToken(SignedJWT signedJWT) {
+        Objects.requireNonNull(signedJWT, "signedJWT must not be null");
+        if (verifiers.isEmpty()) {
+            refreshJWKs();
+        }
+        try {
+            String keyID = signedJWT.getHeader().getKeyID();
+            JWSVerifier verifier = verifiers.get(keyID);
+            if (verifier == null) {
+                log.debug("Unknown key with id: {}", keyID);
+                return false;
+            }
+            Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+            Date now = new Date();
+            if (expirationTime == null || now.after(expirationTime)) {
+                log.debug("JWT exp time ({}) is after now ({}).", expirationTime, now);
+                return false;
+            }
+            return signedJWT.verify(verifier);
+        } catch (java.text.ParseException | JOSEException e) {
+            log.debug("Unable to parse the token: ", e);
+            return false;
+        }
+    }
+
     private synchronized void refreshJWKs() {
         verifiers.clear();
         ensureServerMetadata();
         Iterable<Map<String, Object>> keys
-                = null;
+                = (Collection<Map<String, Object>>) serverMeta.getJwks()
+                .get("keys");
         for (Map<String, Object> key : keys) {
+            String kty = (String) key.get("kty");
             try {
-                if ("EC".equals(key)) {
-                    ECKey ecKey = ECKey.parse(key);
-                    ECDSAVerifier verifier = new ECDSAVerifier(ecKey);
-                    verifiers.put(ecKey.getKeyID(), verifier);
-                } else if ("RSA".equals(key)) {
-                    RSAKey rsaKey = RSAKey.parse(key);
-                    RSASSAVerifier verifier = new RSASSAVerifier(rsaKey);
-                    verifiers.put(rsaKey.getKeyID(), verifier);
-                    throw new IllegalStateException("Unsupported key Type: " + key);
-                } else {
-                    throw new IllegalStateException("Unsupported key Type: " + key);
+                switch (kty) {
+                    case "EC":
+                        ECKey ecKey = ECKey.parse(key);
+                        ECDSAVerifier ecdsaVerifier = new ECDSAVerifier(ecKey);
+                        verifiers.put(ecKey.getKeyID(), ecdsaVerifier);
+                        break;
+                    case "RSA":
+                        RSAKey rsaKey = RSAKey.parse(key);
+                        RSASSAVerifier rsassaVerifier = new RSASSAVerifier(rsaKey);
+                        verifiers.put(rsaKey.getKeyID(), rsassaVerifier);
+                        break;
+                    case "oct":
+                    default:
+                        // never used
+                        throw new IllegalStateException("Unsupported Key Type: " + kty);
                 }
             } catch (ParseException | JOSEException e) {
                 log.warn("Unable to parse JWK: {}", key, e);
@@ -249,11 +322,15 @@ public class OAuth2Client extends BaseClient{
         }
     }
 
+    public static OAuth2ClientBuilder builder() {
+        return new OAuth2ClientBuilder();
+    }
+
     public static class OAuth2ClientBuilder {
         private String clientId;
         private String clientSecret;
         private String redirectUri;
-        private JsonMapper jsonMapper;
+        private Gson jsonMapper;
 
         public OAuth2ClientBuilder() {
         }
@@ -273,13 +350,9 @@ public class OAuth2Client extends BaseClient{
             return this;
         }
 
-        public OAuth2ClientBuilder withJsonMapper(JsonMapper jsonMapper) {
-            this.jsonMapper = Objects.requireNonNull(jsonMapper, "jsonMapper must not be null");
-            return this;
-        }
 
         public OAuth2Client build() {
-            return new OAuth2Client(clientId, clientSecret, redirectUri, jsonMapper);
+            return new OAuth2Client(clientId, clientSecret, redirectUri);
         }
 
         @Override

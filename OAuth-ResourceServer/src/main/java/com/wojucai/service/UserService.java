@@ -1,6 +1,7 @@
 package com.wojucai.service;
 
 import com.wojucai.Result;
+import com.wojucai.entity.po.Role;
 import com.wojucai.entity.po.User;
 import com.wojucai.entity.reqParam.UserQuery;
 import com.wojucai.entity.vo.ClientVo;
@@ -69,4 +70,31 @@ public interface UserService {
      * @return
      */
     UserVo queryUserInfo(UserQuery userQuery);
+
+    /**
+     * 用户登录
+     * @param username
+     * @return
+     */
+    User userLogin(String username);
+
+    /**
+     * 查询Id对应的Role
+     * @param id
+     * @return
+     */
+    Role userRole(Integer id);
+
+    /**
+     * 获取用户信息
+     * @return
+     */
+    UserVo userInfo();
+
+    /**
+     * 用户自己更新信息
+     * @param user
+     * @return
+     */
+    UserVo updateInfo(User user);
 }

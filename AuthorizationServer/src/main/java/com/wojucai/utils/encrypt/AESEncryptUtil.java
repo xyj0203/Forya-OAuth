@@ -30,15 +30,21 @@ public class AESEncryptUtil implements EncryptUtil{
     }
 
     @Override
-    public String encode(String message) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-        SecretKeySpec secretKeySpec = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "AES");
-        cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
-        byte[] bytes = cipher.doFinal(message.getBytes(StandardCharsets.UTF_8));
-        return new String(bytes);
+    public String encode(String message)  {
+        try {
+            SecretKeySpec secretKeySpec = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "AES");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
+            byte[] bytes = cipher.doFinal(message.getBytes(StandardCharsets.UTF_8));
+            return new String(bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
-    public boolean decode(String message, String target) throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
-        return encode(message).equals(target);
+    public boolean decode(String message, String target) {
+        boolean flag = encode(message).equals(target);
+        return flag;
     }
 }

@@ -20,10 +20,6 @@ public class ClientConverter implements Function<Client, ClientVo> {
     public ClientVo apply(Client client) {
         ClientVo clientVo = new ClientVo();
         BeanUtils.copyProperties(client,clientVo);
-        String scope = client.getScope();
-        if (scope != null) {
-            clientVo.setScope(stringParseList(scope));
-        }
         return clientVo;
     }
 

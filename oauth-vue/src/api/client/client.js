@@ -3,34 +3,38 @@ import axios from '@/utils/request'
 const client = {
   // 1.获取所有信息
   findAll: (pageNow, pageNumber) => axios({
-    url: `/client/queryAll?clientName=&id=&pageNow=${pageNow}&pageNumber=${pageNumber}&sort=`,
+    url: `/sysClient/queryAll?clientName=&id=&pageNow=${pageNow}&pageNumber=${pageNumber}&sort=`,
     method: 'get'
   }),
   deleteById: (id) => axios({
-    url: `/client/deleteById/${id}`,
+    url: `/sysClient/deleteById/${id}`,
     method: 'delete'
   }),
   changeEnable: (id, enable) => axios({
-    url: `/client/changeEnable?id=${id}&enable=${enable}`,
+    url: `/sysClient/changeEnable?id=${id}&enable=${enable}`,
     method: 'put'
   }),
   deleteByIds: (arr) => axios({
-    url: '/client/deleteByIds',
+    url: '/sysClient/deleteByIds',
     method: 'delete',
     data: arr
   }),
   insertClient: (obj) => axios({
-    url: '/client/insertClient',
+    url: '/sysClient/insertClient',
     method: 'post',
     data: obj
   }),
   updateClient: (obj) => axios({
-    url: '/client/updateClient',
+    url: '/sysClient/updateClient',
     method: 'put',
     data: obj
   }),
   queryScopeAll: () => axios({
-    url: '/client/queryScopeAll',
+    url: '/sysClient/queryScopeAll',
+    method: 'get'
+  }),
+  search: (pageNow, pageNumber, keywords) => axios({
+    url: `/sysClient/queryClientByName?clientName=${keywords}&id=&pageNow=${pageNow}&pageNumber=${pageNumber}&sort=`,
     method: 'get'
   })
 }

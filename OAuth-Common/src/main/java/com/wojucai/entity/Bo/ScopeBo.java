@@ -19,6 +19,7 @@ import static com.wojucai.entity.codeEnum.ParamConstants.READ;
 @Data
 @AllArgsConstructor
 public class ScopeBo {
+
     /**
      * 主id
      */

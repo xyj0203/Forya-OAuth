@@ -5,12 +5,15 @@ import lombok.Data;
 public enum ResultEnum {
 
     RequestSuccess(10000,"请求成功"),
-    LoginSuccess(100001, "登录成功!"),
+    LoginSuccess(10001, "登录成功!"),
     UserLogout(10002, "退出登录成功！"),
     RequestFail(20000,"请求失败"),
-    ParamsIllegal(200001, "参数不合法"),
+    ParamsIllegal(20001, "参数不合法"),
     UserNotExist(20002, "用户不存在"),
+    UserHadExist(20002, "用户已经存在"),
     UserIllegal(20003, "用户不合法"),
+    UserNotLogin(20004, "用户未登录"),
+    PasswordNotValid(20005, "密码不合法"),
     BODY_NOT_MATCH(400,"请求的数据格式不符!"),
     SIGNATURE_NOT_MATCH(401,"请求的数字签名不匹配!"),
     NOT_FOUND(404, "未找到该资源!"),

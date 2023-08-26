@@ -1,9 +1,11 @@
 package com.wojucai.service.impl;
 
+import com.wojucai.entity.po.User;
 import com.wojucai.entity.reqParam.UserQuery;
 import com.wojucai.entity.vo.UserVo;
 import com.wojucai.service.ClientService;
 import com.wojucai.service.UserService;
+import io.swagger.annotations.ApiOperation;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +21,7 @@ public class UserServiceImplTest {
 
     @Autowired
     private UserService userService;
+
 
     @Test
     void testQueryById() {
@@ -42,4 +45,13 @@ public class UserServiceImplTest {
         Page<UserVo> userVos = userService.queryByUsername(userQuery);
         System.out.println(userVos.getContent());
     }
+
+    @Test
+    void testQueryUserInfo() {
+        UserQuery userQuery = new UserQuery(1, 10, null, null);
+        userQuery.setUsername("admin");
+        UserVo userVo = userService.queryUserInfo(userQuery);
+        System.out.println(userVo);
+    }
+
 }

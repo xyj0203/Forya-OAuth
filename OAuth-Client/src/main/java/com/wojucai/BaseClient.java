@@ -2,6 +2,7 @@ package com.wojucai;
 
 import com.nimbusds.jose.util.Base64;
 import com.wojucai.json.GsonDecoder;
+import com.wojucai.json.GsonEncoder;
 
 /**
  * @description: 客户端
@@ -10,7 +11,15 @@ import com.wojucai.json.GsonDecoder;
  **/
 public abstract class BaseClient {
 
+    /**
+     * 解码器
+     */
     protected final GsonDecoder gsonDecoder = new GsonDecoder();
+
+    /**
+     * 编码器
+     */
+    protected final GsonEncoder gsonEncoder = new GsonEncoder();
 
     /**
      * 获取认证
@@ -21,4 +30,5 @@ public abstract class BaseClient {
     protected static String basicAuth(String userName, String password) {
         return "Basic " + Base64.encode((userName + ":" + password).getBytes());
     }
+
 }

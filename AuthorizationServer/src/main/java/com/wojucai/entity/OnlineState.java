@@ -16,10 +16,13 @@ public class OnlineState {
     /**
      * 在线的角色名
      */
-    private String roleName;
-
+    private Integer roleId;
     /**
-     * 角色Id
+     * 用户Id
      */
     private Long userId;
+    /**
+     * 是否登录成功
+     */
+    private Boolean state;
 }

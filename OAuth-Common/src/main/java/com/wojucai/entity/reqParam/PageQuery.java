@@ -13,17 +13,18 @@ public abstract class PageQuery {
     /**
      * 当前页
      */
-    private Integer pageNow = 1;
+    private Integer pageNow;
 
     /**
      * 条数
      */
-    private Integer pageNumber = PAGE_NUMBER;
+    private Integer pageNumber;
 
     /**
      * 正序排序规则
      */
     private String sortAsc;
+
 
     /**
      * 逆序排序规则
@@ -31,33 +32,35 @@ public abstract class PageQuery {
     private String sortDesc;
 
     public PageQuery(Integer pageNow, Integer pageNumber, String sortAsc, String sortDesc) {
-        verifyPageNow(pageNow);
-        verifyPageNumber(pageNumber);
         this.sortAsc = sortAsc;
         this.sortDesc = sortDesc;
+        this.pageNumber = pageNumber;
+        this.pageNow = pageNow;
     }
 
     public Integer getPageNow() {
+        verifyPageNow(pageNow);
         return pageNow;
     }
 
     public void setPageNow(Integer pageNow) {
-        verifyPageNow(pageNow);
+        this.pageNow = pageNow;
     }
 
     public Integer getPageNumber() {
+        verifyPageNumber(pageNumber);
         return pageNumber;
     }
 
     public void setPageNumber(Integer pageNumber) {
-        verifyPageNumber(pageNumber);
+        this.pageNumber = pageNumber;
     }
 
     private void verifyPageNow(Integer pageNow) {
-        if (pageNow == null || pageNow < 1) {
+        if (pageNow == null || pageNow <= 0) {
             this.pageNow = PAGE_NOW;
         } else {
-            this.pageNow = pageNow;
+            this.pageNow = pageNow - 1;
         }
     }
 

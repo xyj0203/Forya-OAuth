@@ -1,125 +1,210 @@
 <template>
   <div>
-    <el-table
+    <div class="search">
+    <el-input v-model="keyword" placeholder="Search" style="width: 300px;"></el-input>
+    <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
+    <el-button type="primary" icon="el-icon-circle-plus-outline" @click="formAdd = true">添加</el-button>
+    <el-button type="danger" icon="el-icon-delete" @click="handleBatchDelte">批量删除</el-button>
+    <el-button type="info" @click="reset">重置</el-button>
+  </div>
+  <el-table
+    ref="multipleTable"
     :data="tableData"
     style="width: 100%"
+    border
     :default-sort = "{prop: 'date', order: 'descending'}"
     >
     <el-table-column
-      prop="date"
-      label="日期"
-      sortable
-      width="180">
+      prop="check"
+      label="序号"
+      width="50"
+      type="selection"
+      align="center">
     </el-table-column>
     <el-table-column
-      prop="name"
-      label="姓名"
-      sortable
-      width="180">
+      prop="userId"
+      label="序号"
+      width="100"
+      type="index"
+      align="center">
     </el-table-column>
     <el-table-column
-      prop="address"
-      label="地址"
-      >
+      label="用户名"
+      prop="username"
+      width="180"
+      align="center">
     </el-table-column>
-    <el-table-column label="操作">
+    <el-table-column
+      prop="nickName"
+      label="昵称"
+      width="180"
+      align="center">
+    </el-table-column>
+    <el-table-column
+      label="头像"
+      align="center"
+      width="180">
+      <template slot-scope="scope">
+        <el-avatar size="small" :src="scope.row.userImage">
+        </el-avatar>
+      </template>
+    </el-table-column>
+    <el-table-column
+      prop="sex"
+      label="性别"
+      width="100"
+      align="center">
+    </el-table-column>
+    <el-table-column
+      prop="age"
+      label="年龄"
+      sortable
+      width="180"
+      align="center">
+    </el-table-column>
+    <el-table-column
+      prop="role.roleDesc"
+      label="角色"
+      width="180"
+      align="center">
+    </el-table-column>
+    <el-table-column label="操作"
+    align="center">
       <template slot-scope="scope">
         <el-button
           size="mini"
-          @click="handleEdit(scope.$index, scope.row)">查看</el-button>
+          @click="handleEdit(scope.row)">查看</el-button>
         <el-button
           size="mini"
           type="danger"
-          @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          @click="handleDelete(scope.row.userId)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
 
-  <!--表单是否可见-->
-  <el-dialog title="查看" :visible.sync="formAdd">
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-  <el-form-item label="活动名称" prop="name">
-    <el-input v-model="ruleForm.name"></el-input>
+ <!--表单是否可见-->
+ <el-dialog  title="详情" :visible.sync="formEdit" :before-close="handleClose">
+    <el-form :model="user" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+  <el-form-item label="用户名" prop="username">
+    <el-input :disabled=" true" v-model="user.username"></el-input>
   </el-form-item>
-  <el-form-item label="活动区域" prop="region">
-    <el-select v-model="ruleForm.region" placeholder="请选择活动区域">
-      <el-option label="区域一" value="shanghai"></el-option>
-      <el-option label="区域二" value="beijing"></el-option>
-    </el-select>
+  <el-form-item label="密码" prop="password">
+    <el-input type="password" v-model="user.password"></el-input>
   </el-form-item>
-  <el-form-item label="活动时间" required>
-    <el-col :span="11">
-      <el-form-item prop="date1">
-        <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
-      </el-form-item>
-    </el-col>
-    <el-col class="line" :span="2">-</el-col>
-    <el-col :span="11">
-      <el-form-item prop="date2">
-        <el-time-picker placeholder="选择时间" v-model="ruleForm.date2" style="width: 100%;"></el-time-picker>
-      </el-form-item>
-    </el-col>
+  <el-form-item label="昵称" prop="nickName">
+    <el-input type="input" v-model="user.nickName"></el-input>
   </el-form-item>
-  <el-form-item label="即时配送" prop="delivery">
-    <el-switch v-model="ruleForm.delivery"></el-switch>
+  <el-form-item label="生日" prop="birthday">
+    <el-date-picker
+      v-model="user.birthday"
+      type="date"
+      format="yyyy-MM-dd"
+      value-format = "yyyy-MM-dd"
+      placeholder="选择日期">
+    </el-date-picker>
   </el-form-item>
-  <el-form-item label="活动性质" prop="type">
-    <el-checkbox-group v-model="ruleForm.type">
-      <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-      <el-checkbox label="地推活动" name="type"></el-checkbox>
-      <el-checkbox label="线下主题活动" name="type"></el-checkbox>
-      <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-    </el-checkbox-group>
+  <el-form-item label="描述" prop="description" required>
+    <el-input type="textarea" v-model="user.description"></el-input>
   </el-form-item>
-  <el-form-item label="特殊资源" prop="resource">
-    <el-radio-group v-model="ruleForm.resource">
-      <el-radio label="线上品牌商赞助"></el-radio>
-      <el-radio label="线下场地免费"></el-radio>
-    </el-radio-group>
+  <el-form-item label="性别">
+    <el-radio v-model="user.sex" label="男">男</el-radio>
+    <el-radio v-model="user.sex" label="女">女</el-radio>
   </el-form-item>
-  <el-form-item label="活动形式" prop="desc">
-    <el-input type="textarea" v-model="ruleForm.desc"></el-input>
+  <el-form-item label="角色" prop="role">
+    <template>
+  <el-select  placeholder="请选择角色" v-model="user.role">
+    <el-option
+      v-for="role in roles"
+      :key="role.roleId"
+      :label="role.roleDesc"
+      :value="role.roleId">
+    </el-option>
+  </el-select>
+</template>
   </el-form-item>
   <el-form-item>
-    <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-    <el-button @click="resetForm('ruleForm')">重置</el-button>
+    <el-button type="primary" @click="onUpdate">确定</el-button>
+    <el-button @click="cancle()">取消</el-button>
   </el-form-item>
 </el-form>
-  </el-dialog>
+</el-dialog>
 
-  <el-cascader :props="props"></el-cascader>
+ <!--表单是否可见-->
+ <el-dialog  title="详情" :visible.sync="formAdd" :before-close="handleClose">
+    <el-form :model="user" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+  <el-form-item label="用户名" prop="username">
+    <el-input  v-model="user.username"></el-input>
+  </el-form-item>
+  <el-form-item label="密码" prop="password">
+    <el-input type="password" v-model="user.password"></el-input>
+  </el-form-item>
+  <el-form-item label="昵称" prop="nickName">
+    <el-input type="input" v-model="user.nickName"></el-input>
+  </el-form-item>
+  <el-form-item label="生日" prop="birthday">
+    <el-date-picker
+      v-model="user.birthday"
+      type="date"
+      format="yyyy-MM-dd"
+      value-format = "yyyy-MM-dd"
+      placeholder="选择日期">
+    </el-date-picker>
+  </el-form-item>
+  <el-form-item label="描述" prop="description" required>
+    <el-input type="textarea" v-model="user.description"></el-input>
+  </el-form-item>
+  <el-form-item label="性别">
+    <el-radio v-model="user.sex" label="男">男</el-radio>
+    <el-radio v-model="user.sex" label="女">女</el-radio>
+  </el-form-item>
+  <el-form-item label="角色" prop="role">
+    <template>
+  <el-select  placeholder="请选择角色" v-model="user.role">
+    <el-option
+      v-for="role in roles"
+      :key="role.roleId"
+      :label="role.roleDesc"
+      :value="role.roleId">
+    </el-option>
+  </el-select>
+</template>
+  </el-form-item>
+  <el-form-item>
+    <el-button type="primary" @click="onAdd">确定</el-button>
+    <el-button @click="cancle()">取消</el-button>
+  </el-form-item>
+</el-form>
+</el-dialog>
+<!--分页-->
+<el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[5, 7, 10]"
+      :page-size="pageNumber"
+      background
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+      >
+    </el-pagination>
   </div>
 
 </template>
 
 <script>
-let id = 0
+import user from '@/api/user/user'
+import role from '@/api/client/role'
 export default {
   data () {
     return {
-      props: {
-        lazy: true,
-        lazyLoad (node, resolve) {
-          const { level } = node
-          console.log(level)
-          setTimeout(() => {
-            const nodes = Array.from({ length: level + 1 })
-              .map(item => ({
-                value: ++id,
-                label: `选项${id}`,
-                leaf: level >= 2
-              }))
-              // 通过调用resolve将子节点数据返回，通知组件数据加载完成
-            resolve(nodes)
-          }, 1000)
-        }
-      },
+      tableData: [],
+      roles: [],
+      currentPage: 1,
+      pageNumber: 7,
+      total: 0,
       formAdd: false,
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }],
+      formEdit: false,
+      isSearch: false,
       ruleForm: {
         name: '',
         region: '',
@@ -130,58 +215,214 @@ export default {
         resource: '',
         desc: ''
       },
+      user: {},
+      keyword: '',
       rules: {
-        name: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-        ],
-        region: [
-          { required: true, message: '请选择活动区域', trigger: 'change' }
-        ],
-        date1: [
-          { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
-        ],
-        date2: [
-          { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
-        ],
-        type: [
-          { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
-        ],
-        resource: [
-          { required: true, message: '请选择活动资源', trigger: 'change' }
-        ],
-        desc: [
-          { required: true, message: '请填写活动形式', trigger: 'blur' }
-        ]
+
       }
     }
   },
   methods: {
-    handleEdit (index, row) {
-      this.formAdd = true
-      console.log(index, row)
+    handleCurrentChange (val) {
+      this.currentPage = val
+      if (this.isSearch) {
+        this.search()
+      } else {
+        this.queryAll()
+      }
     },
-    handleDelete (index, row) {
+    // 分页
+    handleSizeChange (val) {
+      this.pageNumber = val
+      if (this.isSearch) {
+        this.search()
+      } else {
+        this.queryAll()
+      }
+    },
+    // 取消操作
+    cancle () {
+      this.formAdd = false
+      this.formEdit = false
+      this.user = {}
+    },
+    // 置对象为空
+    handleClose (done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done()
+          this.user = {}
+        })
+        .catch(_ => { })
+    },
+    async queryRoles () {
+      const { data } = await role.queryAll()
+      if (data.code === 10000) {
+        const { object } = data
+        this.roles = object
+      } else {
+        this.$message({
+          type: 'warning',
+          message: data.message
+        })
+      }
+    },
+    // 获取表格数据
+    async queryAll () {
+      const { data } = await user.findAll(this.currentPage, this.pageNumber, '')
+      if (data.code === 10000) {
+        const { object } = data
+        this.total = parseInt(object.totalElements)
+        this.tableData = object.content
+      } else {
+        this.$message({
+          type: 'warning',
+          message: data.message
+        })
+      }
+    },
+    // 搜索
+    async search () {
+      if (this.keyword.length === 0) {
+        this.$message({
+          type: 'warning',
+          message: '名称不能为空'
+        })
+        return
+      }
+      this.isSearch = true
+      const { data } = await user.search(this.currentPage, this.pageNumber, this.keyword)
+      if (data.code === 400) {
+        this.$message({
+          type: 'warning',
+          message: data.message
+        })
+      } else {
+        const { object } = data
+        this.total = parseInt(object.totalElements)
+        this.tableData = object.content
+      }
+    },
+    // 重置
+    reset () {
+      this.keyword = ''
+      this.isSearch = false
+      this.queryAll()
+    },
+    // 编辑
+    handleEdit (user) {
+      this.formEdit = true
+      this.user = Object.assign({}, user)
+      this.user.role = user.role.roleId
+    },
+    // 删除
+    async deleteById (id) {
+      const { data } = await user.deleteById(id)
+      if (data.code === 10000) {
+        this.$message({
+          type: 'success',
+          message: '删除成功'
+        })
+      } else {
+        this.$message({
+          type: 'warning',
+          message: data.message
+        })
+      }
+    },
+    // 批量删除
+    async handleBatchDelte () {
+      const selections = this.$refs.multipleTable.selection
+      const arr = selections.map(function (item, index, seli) {
+        return item.userId
+      })
+      if (arr.length === 0) {
+        this.$message({
+          type: 'warning',
+          message: '未选中数据'
+        })
+        return
+      }
+      const { data } = await user.deleteByIds(arr)
+      if (data.code === 10000) {
+        this.$message({
+          type: 'success',
+          message: '删除成功'
+        })
+      } else {
+        this.$message({
+          type: 'error',
+          message: '删除失败'
+        })
+      }
+      this.queryAll()
+    },
+    // 删除
+    handleDelete (index) {
       this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        })
+        this.deleteById(index)
+        this.queryAll()
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消删除'
         })
       })
+    },
+    // 添加
+    async onAdd () {
+      const obj = Object.assign({}, this.user)
+      obj.sex = obj.sex === '男' ? 0 : 1
+      const { data } = await user.insertUser(obj)
+      if (data.code === 10000) {
+        this.$message({
+          type: 'success',
+          message: '添加成功'
+        })
+        this.formAdd = false
+        this.user = {}
+        this.queryAll()
+      } else {
+        this.$message({
+          type: 'warning',
+          message: data.message
+        })
+      }
+    },
+    async onUpdate () {
+      const obj = Object.assign({}, this.user)
+      obj.sex = obj.sex === '男' ? 0 : 1
+      const { data } = await user.updateUser(obj)
+      if (data.code === 10000) {
+        this.$message({
+          type: 'success',
+          message: '更新成功'
+        })
+        this.formEdit = false
+        this.user = {}
+        this.queryAll()
+      } else {
+        this.$message({
+          type: 'warning',
+          message: data.message
+        })
+      }
     }
+  },
+
+  mounted: function () {
+    this.queryAll()
+    this.queryRoles()
   }
 }
 </script>
 
 <style>
-
+.search {
+  margin-bottom: 10px;
+}
 </style>

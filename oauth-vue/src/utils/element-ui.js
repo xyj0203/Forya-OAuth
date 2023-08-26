@@ -41,7 +41,11 @@ import {
   CheckboxGroup,
   Select,
   CascaderPanel,
-  Cascader
+  Cascader,
+  Collapse,
+  CollapseItem,
+  Tree
+
 } from 'element-ui'
 
 Vue.use(Breadcrumb)
@@ -84,6 +88,9 @@ Vue.use(CheckboxGroup)
 Vue.use(Select)
 Vue.use(CascaderPanel)
 Vue.use(Cascader)
+Vue.use(Collapse)
+Vue.use(CollapseItem)
+Vue.use(Tree)
 Vue.prototype.$loading = Loading.service
 Vue.prototype.$msgbox = MessageBox
 Vue.prototype.$alert = MessageBox.alert

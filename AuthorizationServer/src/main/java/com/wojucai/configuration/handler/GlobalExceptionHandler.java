@@ -27,6 +27,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Result bizExceptionHandler(BizException e) {
         log.error("发生业务异常！原因是：{}",e.getMessage());
+        e.printStackTrace();
         return Result.fail(e.getCode(), e.getMessage());
     }
 
@@ -46,6 +47,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = BindException.class)
     @ResponseBody
     public Result exceptionHandler(BindException e) {
+        e.printStackTrace();
         List<ObjectError> allErrors = e.getAllErrors();
         String error = "服务器繁忙";
         for (ObjectError allError : allErrors) {
@@ -69,6 +71,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Result exceptionHandler(Exception e){
         log.error("未知异常！原因是:",e);
+        e.printStackTrace();
         return Result.fail(INTERNAL_SERVER_ERROR);
     }
 }

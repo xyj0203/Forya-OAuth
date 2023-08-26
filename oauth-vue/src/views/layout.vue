@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import store from '@/store'
 export default {
   name: 'layout-component',
   data () {
@@ -54,11 +55,14 @@ export default {
   },
   methods: {
     logout () {
-      this.$axios.get('/userLogout')
+      // 移除本地的用户信息
+      this.$axios.get('/baseUser/userLogout')
         .then(res => {
           const { data } = res
-          if (data.code === 10001) {
+          if (data.code <= 20000) {
             this.$router.push('/login')
+            store.commit('user/setOnlineOnlineState', null)
+            store.commit('user/setRole', null)
           }
         })
         .catch(err => {

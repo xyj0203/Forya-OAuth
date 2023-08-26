@@ -2,6 +2,7 @@ package com.wojucai;
 
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.wojucai.enums.ResultEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -94,7 +95,7 @@ public class Result {
      * @return
      */
     public static Result fail( String message) {
-        Result result = new Result(null, message, null);
+        Result result = new Result(400, message, null);
         return result;
     }
 }

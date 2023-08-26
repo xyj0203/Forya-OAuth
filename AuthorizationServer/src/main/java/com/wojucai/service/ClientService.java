@@ -1,9 +1,8 @@
 package com.wojucai.service;
 
-import com.wojucai.entity.Client;
-import com.wojucai.entity.Result;
+import com.wojucai.Result;
+import com.wojucai.entity.po.Client;
 import com.wojucai.entity.reqParam.ClientQuery;
-import feign.Param;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +14,7 @@ import java.util.List;
  */
 @FeignClient(
         name = "resource-server",
-        url = "${feign.resource-server-url}"
+        url = "${feign.resource-server-url}" + "${feign.sys-client-url}"
 )
 public interface ClientService {
 
@@ -23,7 +22,7 @@ public interface ClientService {
      * 通过客户端名称查询
      * @return
      */
-    @GetMapping("/client/queryClientByName")
+    @GetMapping("/queryClientByName")
     Result queryClientByName(@SpringQueryMap ClientQuery clientQuery);
 
     /**
@@ -31,7 +30,7 @@ public interface ClientService {
      * @param client 客户端对象
      * @return
      */
-    @PostMapping("/client/insertClient")
+    @PostMapping("/insertClient")
     Result insertClient(@RequestBody Client client);
 
     /**
@@ -39,7 +38,7 @@ public interface ClientService {
      * @param client 客户端对象
      * @return
      */
-    @PutMapping("/client/updateClient")
+    @PutMapping("/updateClient")
     Result updateClient(@RequestBody Client client);
 
     /**
@@ -47,7 +46,7 @@ public interface ClientService {
      * @param id id信息
      * @return
      */
-    @DeleteMapping("/client/deleteById/{id}")
+    @DeleteMapping("/deleteById/{id}")
     Result deleteById(@PathVariable(value = "id") Integer id);
 
     /**
@@ -55,7 +54,7 @@ public interface ClientService {
      * @param ids
      * @return
      */
-    @DeleteMapping("/client/deleteByIds")
+    @DeleteMapping("/deleteByIds")
     Result deleteByIds(List<Integer> ids);
 
     /**
@@ -63,7 +62,7 @@ public interface ClientService {
      * @param clientQuery
      * @return
      */
-    @GetMapping("/client/queryById")
+    @GetMapping("/queryById")
     Result queryById(@SpringQueryMap ClientQuery clientQuery);
 
     /**
@@ -71,7 +70,7 @@ public interface ClientService {
      * @param clientQuery 条件信息
      * @return
      */
-    @GetMapping("/client/queryAll")
+    @GetMapping("/queryAll")
     Result queryAll(@SpringQueryMap ClientQuery clientQuery);
 
     /**
@@ -80,14 +79,14 @@ public interface ClientService {
      * @param enable 是否启用
      * @return
      */
-    @PutMapping("/client/changeEnable")
+    @PutMapping("/changeEnable")
     Result changeEnable(@RequestParam("id") Integer id, @RequestParam("enable") Integer enable);
 
     /**
      * 查询所有
      * @return
      */
-    @GetMapping("/client/queryScopeAll")
+    @GetMapping("/queryScopeAll")
     Result queryScopeAll();
 
     /**
@@ -95,6 +94,23 @@ public interface ClientService {
      * @param clientId
      * @return
      */
-    @GetMapping("/client/queryClientById/{clientId}")
+    @GetMapping("/queryClientById/{clientId}")
     Result queryClientById(@PathVariable(value = "clientId")String clientId);
+
+    /**
+     * 根据客户端id查找
+     * @param clientId 客户端id
+     * @param userId 用户id
+     * @return
+     */
+    @GetMapping("/queryConsentById")
+    Result queryConsentById(@RequestParam("clientId")String clientId, @RequestParam("userId") Integer userId);
+
+    /**
+     * 查询构建授权页面的元素
+     * @param clientId 客户端Id
+     * @return
+     */
+    @GetMapping("/queryClientScope")
+    Result queryClientScope(@RequestParam("clientId") String clientId, @RequestParam("userId") Long userId);
 }

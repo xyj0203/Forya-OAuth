@@ -1,8 +1,9 @@
 package com.wojucai;
 
-import org.mybatis.spring.annotation.MapperScan;
+import com.wojucai.entity.ServerMetadata;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
@@ -12,7 +13,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  **/
 @SpringBootApplication
 @EnableFeignClients
-@MapperScan("com.wojucai.mapper")
+@EnableConfigurationProperties(ServerMetadata.class)
 public class OAuthApplication {
     public static void main(String[] args) {
         SpringApplication.run(OAuthApplication.class, args);

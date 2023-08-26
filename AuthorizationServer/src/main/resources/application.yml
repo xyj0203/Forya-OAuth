@@ -1,19 +1,13 @@
 spring:
   application:
     name: spring-mybatis
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    name: defaultDataSource
-    url: jdbc:mysql://localhost:3306/oauth?serverTimezone=UTC
-    username: root
-    password: 123456
   servlet:
     multipart:
       max-file-size: 100MB
       max-request-size: 1000MB
   jackson:
     #设置空如何序列化
-    default-property-inclusion: NON_EMPTY
+    #default-property-inclusion: NON_EMPTY
     deserialization:
       fail_on_unknown_properties: false
     parser:
@@ -23,6 +17,8 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+    static-path-pattern: /**
+
 server:
   port: 8081
 mybatis-plus:
@@ -39,4 +35,31 @@ encode:
   secret:
     $adhajkshdgghjds
 feign:
-  resource-server-url: http://localhost:8082/api
+  resource-server-url: http://localhost:8082
+  sys-user-url: /sysUser
+  sys-client-url: /sysClient
+  sys-role-url: /sysRole
+  sys-index-url: /sysIndex
+oauth:
+  metadata:
+    issuer: http://localhost:8081
+    authorization-endpoint: ${oauth.metadata.issuer}/user/oauth2/authorize
+    token-endpoint: ${oauth.metadata.issuer}/user/oauth2/token
+    token-endpoint-auth-methods-supported:
+      - client_secret_basic
+    token-endpoint-auth-signing-alg-values-supported:
+      - ES256
+    jwks-uri: ${oauth.metadata.issuer}/.well-known/jwks.json
+    response-types-supported:
+      - code
+    grant-types-supported:
+      - authorization_code
+      - refresh_token
+#  指定日志级别 把springboot的所有日志修改成为debug
+#logging:
+#  level:
+#    root: info
+#    com.wojucai.service.UserService: debug
+#  config: classpath:logback.xml
+#  file:
+#    path: logs

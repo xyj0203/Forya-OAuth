@@ -1,11 +1,12 @@
 package com.wojucai.json;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapter;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 import static feign.Util.resolveLastTypeParameter;
@@ -29,6 +30,9 @@ final class GsonFactory {
             Type type = resolveLastTypeParameter(adapter.getClass(), TypeAdapter.class);
             builder.registerTypeAdapter(type, adapter);
         }
+        builder.registerTypeAdapter(LocalDate.class, (JsonDeserializer<LocalDate>) (json, type, jsonDeserializationContext) -> {
+            return LocalDate.parse(json.getAsString(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        });
         return builder.create();
     }
 }

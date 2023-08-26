@@ -8,3 +8,5 @@
 /OAuth-ResourceServer/logs
 /OAuth-Client/target
 /OAuth-Login/target
+/oauth-vue/dist
+/OAuth-ResourceServer/src/main/resources/application-dev.yml

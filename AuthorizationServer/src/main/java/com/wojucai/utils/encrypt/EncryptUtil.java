@@ -16,7 +16,7 @@ public interface EncryptUtil {
      * @param message
      * @return
      */
-    String encode(String message) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException;
+    String encode(String message);
 
     /**
      * 是否符合预期
@@ -24,5 +24,5 @@ public interface EncryptUtil {
      * @param target
      * @return
      */
-    boolean decode(String message, String target) throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException;
+    boolean decode(String message, String target);
 }

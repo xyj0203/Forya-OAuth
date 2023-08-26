@@ -1,8 +1,8 @@
 package com.wojucai.service.impl;
 
-import com.wojucai.entity.reqParam.ClientQuery;
 import com.wojucai.entity.reqParam.PageQuery;
 import com.wojucai.util.SortUtil;
+import com.wojucai.util.TimeUtil;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -21,8 +21,7 @@ public abstract class AbstractImpl {
         String sortAsc = pageQuery.getSortAsc();
         String sortDesc = pageQuery.getSortDesc();
         Sort sort = SortUtil.sortMultiColumn(sortAsc, sortDesc);
-        System.out.println(pageQuery.getPageNumber() + " " + pageQuery.getPageNow());
-        Pageable page = sort == null ? PageRequest.of(pageQuery.getPageNow()-1, pageQuery.getPageNumber()) :
+        Pageable page = sort == null ? PageRequest.of(pageQuery.getPageNow(), pageQuery.getPageNumber()) :
                 PageRequest.of(pageQuery.getPageNow(), pageQuery.getPageNumber(), sort);
         Page<T> pageList;
         if (entity == null) {
@@ -33,19 +32,28 @@ public abstract class AbstractImpl {
             // 查询到的对象
             pageList = jpaRepository.findAll(example, page);
         }
+        TimeUtil.start();
         // 将Client转换为ClientVo
         Page<R> returnPage = pageList.map(converter);
+        TimeUtil.end();
         return returnPage;
     }
 
     public <T, R> R queryForOne (T entity, ExampleMatcher exampleMatcher, Function<T,R> converter, JpaRepository jpaRepository) {
         Example<T> example = Example.of(entity, exampleMatcher);
         Optional<T> optional = jpaRepository.findOne(example);
-        T t = optional.get();
+        T t = optional.orElse(null);
         R res = null;
         if (t != null) {
             res = converter.apply(t);
         }
         return res;
+    }
+
+    public <T> T queryForOne (T entity, ExampleMatcher exampleMatcher, JpaRepository jpaRepository) {
+        Example<T> example = Example.of(entity, exampleMatcher);
+        Optional<T> optional = jpaRepository.findOne(example);
+        T t = optional.orElse(null);
+        return t;
     }
 }

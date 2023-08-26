@@ -32,6 +32,8 @@
     </div>
 </template>
 <script>
+import oauth from '@/api/client/oauth'
+import store from '@/store'
 export default {
   name: 'login-component',
   data () {
@@ -56,26 +58,21 @@ export default {
   },
   methods: {
     async submit () {
-      const { data } = await this.$axios.post('/userLogin',
-        {
-          username: this.form.username,
-          password: this.form.password
-        }
-      )
-      console.log(data)
-      if (data.code === 10000) {
-        if (data.object.roleName === 'ADMIN') {
+      const { data } = await oauth.login(this.form.username, this.form.password)
+      if (data.code < 20000) {
+        await store.dispatch('user/fetchOnlineState')
+        await store.dispatch('user/fetchRole', data.object.roleId)
+        const roleName = store.getters['user/getRole']
+        if (roleName !== 'USER') {
           this.$router.push('/index')
         } else {
           this.$router.push('/checkScope')
         }
-      } else {
-        this.$message({
-          message: data.message,
-          type: 'warning'
-        })
       }
     }
+  },
+  mounted: {
+
   }
 }
 </script>

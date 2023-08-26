@@ -8,7 +8,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="OAuth-Client" />
-        <module name="OAuth-Login" />
         <module name="AuthorizationServer" />
         <module name="OAuth-Common" />
         <module name="OAuth-ResourceServer" />

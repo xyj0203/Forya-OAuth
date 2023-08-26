@@ -1,19 +1,21 @@
 package com.wojucai.util.factory;
 
-import com.wojucai.entity.annotation.ScopeAnnotations;
-import com.wojucai.entity.annotation.PropertyAnnotations;
 import com.wojucai.dao.ScopePropertyRepository;
 import com.wojucai.dao.ScopeRepository;
+import com.wojucai.entity.annotation.PropertyAnnotations;
+import com.wojucai.entity.annotation.ScopeAnnotations;
 import com.wojucai.entity.po.Scope;
 import com.wojucai.entity.po.ScopeProperty;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.SmartInitializingSingleton;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ClassUtils;
@@ -21,6 +23,8 @@ import org.springframework.util.ClassUtils;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+
+import static com.wojucai.entity.codeEnum.CacheConstant.SCOPE_CACHE;
 
 
 /**
@@ -38,6 +42,8 @@ public class ScopeAnalyzeFactory implements SmartInitializingSingleton {
     private ScopeRepository scopeRepository;
     @javax.annotation.Resource
     private ScopePropertyRepository scopePropertyRepository;
+    @Autowired
+    private RedisTemplate<String,Integer> redisTemplate;
 
     @Override
     public void afterSingletonsInstantiated() {
@@ -48,8 +54,8 @@ public class ScopeAnalyzeFactory implements SmartInitializingSingleton {
      * 从指定包下加载Scope类
      */
     private void parseScopeClass() {
-        scopeRepository.deleteAll();
-        scopePropertyRepository.deleteAll();
+//        scopeRepository.deleteAll();
+//        scopePropertyRepository.deleteAll();
         int cnt = 0;
         // 获取指定路径下的全部类
         ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
@@ -74,27 +80,30 @@ public class ScopeAnalyzeFactory implements SmartInitializingSingleton {
 
     @Transactional(rollbackFor = Exception.class)
     void persistenceScope(String className) throws ClassNotFoundException {
-        Class<?> clazz = Class.forName(className);
-        //判断是否有指定主解
-        ScopeAnnotations scopes = clazz.getAnnotation(ScopeAnnotations.class);
-        if (scopes != null) {
-            Scope scope = new Scope(null, className, scopes.classDescription());
-            scopeRepository.save(scope);
-            Field []fields = clazz.getDeclaredFields();
-            for (Field field : fields) {
-                if (field.isAnnotationPresent(PropertyAnnotations.class)) {
-                    PropertyAnnotations annotations = field.getAnnotation(PropertyAnnotations.class);
-                    if (annotations.behavior() == 1) {
-                        ScopeProperty scopeProperty = new ScopeProperty(null,
-                                field.getName(), scope.getId(), annotations.behavior() - 1, annotations.description());
-                        scopePropertyRepository.save(scopeProperty);
-                    }
-                    ScopeProperty scopeProperty = new ScopeProperty(null,
-                            field.getName(), scope.getId(), annotations.behavior(), annotations.description());
-                    scopePropertyRepository.save(scopeProperty);
-                }
-            }
-
-        }
+//        Class<?> clazz = Class.forName(className);
+//        redisTemplate.delete(SCOPE_CACHE+className);
+//        //判断是否有指定主解
+//        ScopeAnnotations scopes = clazz.getAnnotation(ScopeAnnotations.class);
+//        if (scopes != null) {
+//            className = clazz.getSimpleName();
+//            Scope scope = new Scope(null, className, scopes.classDescription());
+//            scopeRepository.save(scope);
+//            Field []fields = clazz.getDeclaredFields();
+//            for (Field field : fields) {
+//                if (field.isAnnotationPresent(PropertyAnnotations.class)) {
+//                    PropertyAnnotations annotations = field.getAnnotation(PropertyAnnotations.class);
+//                    if (annotations.behavior() == 1) {
+//                        ScopeProperty scopeProperty = new ScopeProperty(null,
+//                                field.getName(), scope.getId(), annotations.behavior() - 1, annotations.description());
+//                        ScopeProperty save1 = scopePropertyRepository.save(scopeProperty);
+//                        redisTemplate.opsForList().leftPush(SCOPE_CACHE+className,save1.getId());
+//                    }
+//                    ScopeProperty scopeProperty = new ScopeProperty(null,
+//                            field.getName(), scope.getId(), annotations.behavior(), annotations.description());
+//                    ScopeProperty save1 = scopePropertyRepository.save(scopeProperty);
+//                    redisTemplate.opsForList().leftPush(SCOPE_CACHE+className,save1.getId());
+//                }
+//            }
+//        }
     }
 }
