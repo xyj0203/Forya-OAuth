@@ -49,20 +49,20 @@ npm run build
 ### AuthorizationServer使用说明
 #### 普通用户
 1、登录界面
-![登录界面](http://files.xyjxkl.top/img/login.png)
+![登录界面](picture/login.png)
 2、无授权的界面
-![无授权界面](http://files.xyjxkl.top/img/nogrant.png "无授权界面")
+![无授权界面](picture/nogrant.png)
 3、有授权界面
-![有授权界面](http://files.xyjxkl.top/img/hasgrant.png "无授权界面")
+![有授权界面](picture/hasgrant.png)
 #### 管理员
 1、登录界面
-![登录界面](http://files.xyjxkl.top/img/login.png "登录")
+![登录界面](picture/login.png)
 2、主页
-![主页](http://files.xyjxkl.top/img/index.png "主页")
+![主页](picture/index.png)
 3、用户管理
-![用户管理](http://files.xyjxkl.top/img/user.png "用户管理")
+![用户管理](picture/user.png)
 4、客户端管理
-![客户端管理](http://files.xyjxkl.top/img/client.png "客户端管理")
+![客户端管理](picture/client.png)
 ### OAuth-Client使用说明
 ```java
 public class TestOAuth2Client {
