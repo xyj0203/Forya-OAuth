@@ -4,8 +4,8 @@
 	<img src="https://img.shields.io/badge/JDK-8-green.svg" alt="jdk-8" />
 </a>
 </p>
-# OAuth-Project
 
+# OAuth-Project
 ## 介绍
 ### 功能介绍
 这是一款基于OAuth2授权的软件，与一般的OAuth2不同，这款软件主要是基于属性的读写权限进行控制。目前仅支持授权码模式。  
