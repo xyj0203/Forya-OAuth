@@ -1,5 +1,7 @@
 package com.wojucai;
 
+import cn.hutool.core.net.url.UrlBuilder;
+import cn.hutool.core.util.URLUtil;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.google.gson.Gson;
 import com.nimbusds.jose.JOSEException;
@@ -15,6 +17,7 @@ import com.wojucai.bean.metadata.ServerMetadata;
 import com.wojucai.bean.metadata.TokenResponse;
 import com.wojucai.entity.po.Authorization;
 import com.wojucai.entity.po.AuthorizationCode;
+import com.wojucai.json.GsonDecoder;
 import com.wojucai.util.TextUtils;
 import feign.Feign;
 import org.apache.hc.core5.net.URIBuilder;
@@ -108,14 +111,12 @@ public class OAuth2Client extends BaseClient{
         log.debug("Generated state: {}, with redirect_uri: {}", state, redirectUri);
         states.put(state, redirectUri);
         String authorizationEndpoint = serverMetadata.getAuthorization_endpoint();
-        return new URIBuilder(authorizationEndpoint)
-                .addParameter("client_id", clientId)
-                .addParameter("redirect_uri", redirectUri)
-                .addParameter("state", state)
-                .addParameter("client_secret",clientSecret)
-                .addParameter("response_type", "code")
-                .normalizeSyntax()
-                .toString();
+        return UrlBuilder.of(authorizationEndpoint)
+                .addQuery("client_id", clientId)
+                .addQuery("redirect_uri", redirectUri)
+                .addQuery("state", state)
+                .addQuery("client_secret",clientSecret)
+                .addQuery("response_type", "code").build();
     }
 
     /**

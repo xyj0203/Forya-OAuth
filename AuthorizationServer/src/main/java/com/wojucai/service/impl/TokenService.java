@@ -89,7 +89,7 @@ public class TokenService {
                     .accessToken(accessJWT.serialize())
                     .tokenType("bearer")
                     .refreshToken(refreshJWT.serialize())
-                    .expiresIn(expiresIn.toSeconds())
+                    .expiresIn(expiresIn.getSeconds())
                     .scope(authorizationCode.getScope().toString())
                     .build();
         } catch (JOSEException e) {

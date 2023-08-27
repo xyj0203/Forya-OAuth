@@ -11,8 +11,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,10 +41,10 @@ public class KeyStoreConfig {
     @Bean
     @SuppressWarnings("unchecked")
     public KeyStore keyStore() {
-        var keystorePath = Path.of("keystore.json");
+        Path keystorePath = Paths.get("keystore.json");
         if (Files.isReadable(keystorePath)) {
-            try (var src = Files.newInputStream(keystorePath)) {
-                var json = objectMapper.readValue(src, Map.class);
+            try (InputStream src = Files.newInputStream(keystorePath)) {
+                Map json = objectMapper.readValue(src, Map.class);
                 KeyStore keyStore = new KeyStore();
                 keyStore.setRefreshKey(Base64.from(json.get("refreshKey").toString()).decode());
                 keyStore.setEcKey(ECKey.parse((Map<String, Object>) json.get("ecKey")));
@@ -50,9 +53,9 @@ public class KeyStoreConfig {
                 throw new IllegalStateException(e);
             }
         } else {
-            var generated = KeyStore.generate();
-            try (var out = Files.newOutputStream(keystorePath)) {
-                var json = new HashMap<>();
+            KeyStore generated = KeyStore.generate();
+            try (OutputStream out = Files.newOutputStream(keystorePath)) {
+                Map json = new HashMap<>();
                 json.put("refreshKey", generated.getRefreshKey());
                 json.put("ecKey", generated.getEcKey().toJSONObject());
                 objectMapper.writer(SerializationFeature.INDENT_OUTPUT)

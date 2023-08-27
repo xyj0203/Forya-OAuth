@@ -4,11 +4,12 @@ import com.wojucai.bean.interceptor.FeignRequestInterceptor;
 import com.wojucai.bean.metadata.UserService;
 import com.wojucai.entity.po.User;
 import com.wojucai.entity.vo.UserVo;
+import com.wojucai.json.GsonDecoder;
 import feign.Feign;
 import org.springframework.util.Assert;
 
 /**
- * @description:
+ * @description:用户操作客户端
  * @author: xuyujie
  * @date: 2023/08/20
  **/

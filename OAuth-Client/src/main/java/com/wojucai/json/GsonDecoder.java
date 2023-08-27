@@ -3,10 +3,12 @@ package com.wojucai.json;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.TypeAdapter;
+import com.wojucai.Result;
 import feign.Response;
 import feign.Util;
 import feign.codec.Decoder;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Type;

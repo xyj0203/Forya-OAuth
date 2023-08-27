@@ -2,6 +2,7 @@
 /OAuth-Common/target/
 /OAuth-ResourceServer/target/
 /AuthorizationServer/target
+/AuthorizationServer/logs
 /.idea
 /oauth-vue/node_modules
 /logs
