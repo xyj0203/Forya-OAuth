@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="OAuth-Client" />
         <module name="AuthorizationServer" />
+        <module name="AuthorizonServer" />
         <module name="OAuth-Common" />
         <module name="OAuth-ResourceServer" />
       </profile>
