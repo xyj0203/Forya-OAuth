@@ -1,6 +1,7 @@
 package com.wojucai.util.invoker.assign;
 
 import com.wojucai.util.invoker.exception.MethodExecuteException;
+import com.wojucai.util.invoker.support.ConfigSupport;
 
 import java.lang.invoke.MethodHandle;
 import java.util.*;
@@ -14,9 +15,11 @@ public class MethodHandleValueAssign extends DynamicValueAssign{
 
     private final Map<String, Map<String, MethodHandle>> handleMap;
 
-    public MethodHandleValueAssign(Map<String, Set<String>> writeTable,
-                                   Map<String, Set<String>> readTable, Map<String, Map<String, MethodHandle>> handleMap) {
-        super(writeTable, readTable);
+    public MethodHandleValueAssign(Map<String, Set<String>> getTable,
+                                   Map<String, Set<String>> setTable,
+                                   ConfigSupport configSupport,
+                                   Map<String, Map<String, MethodHandle>> handleMap) {
+        super(getTable, setTable, configSupport);
         this.handleMap = handleMap;
     }
 
@@ -24,9 +27,9 @@ public class MethodHandleValueAssign extends DynamicValueAssign{
     public void invokeSetMethod(Object obj, String property, Object ...params) {
         String className = obj.getClass().getName();
         Map<String, MethodHandle> methodHandleMap = handleMap.get(className);
-        MethodHandle handle = methodHandleMap.get(configSupport.buildGetMethodName(property));
+        MethodHandle handle = methodHandleMap.get(configSupport.buildSetMethodName(property));
         try {
-            handle.invoke(obj, params);
+            handle.invoke(obj, params[0]);
         } catch (Throwable throwable) {
             throw new MethodExecuteException("method execute exception, please check if method exist!");
         }
@@ -36,7 +39,7 @@ public class MethodHandleValueAssign extends DynamicValueAssign{
     public Object invokeGetMethod(Object obj, String property) {
         String className = obj.getClass().getName();
         Map<String, MethodHandle> methodHandleMap = handleMap.get(className);
-        MethodHandle handle = methodHandleMap.get(configSupport.buildSetMethodName(property));
+        MethodHandle handle = methodHandleMap.get(configSupport.buildGetMethodName(property));
         try {
             return handle.invoke(obj);
         } catch (Throwable throwable) {

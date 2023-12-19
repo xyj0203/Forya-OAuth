@@ -90,6 +90,7 @@ public abstract class AbstractConfigSupport implements ConfigSupport{
                                         methods.add(buildGetMethodName(property));
                                     }
                             );
+                            propertyTable.put(k, methods);
                         }
                 );
                 break;
@@ -102,6 +103,7 @@ public abstract class AbstractConfigSupport implements ConfigSupport{
                                         methods.add(buildSetMethodName(property));
                                     }
                             );
+                            propertyTable.put(k, methods);
                         }
                 );
                 break;

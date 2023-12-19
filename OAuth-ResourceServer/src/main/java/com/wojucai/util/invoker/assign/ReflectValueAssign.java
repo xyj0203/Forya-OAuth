@@ -1,6 +1,7 @@
 package com.wojucai.util.invoker.assign;
 
 import com.wojucai.util.invoker.exception.MethodExecuteException;
+import com.wojucai.util.invoker.support.ConfigSupport;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -20,8 +21,9 @@ public class ReflectValueAssign extends DynamicValueAssign{
 
     public ReflectValueAssign(Map<String, Set<String>> getTable,
                               Map<String, Set<String>> setTable,
+                              ConfigSupport configSupport,
                               Map<String, Map<String, Method>> methodMap) {
-        super(getTable, setTable);
+        super(getTable, setTable, configSupport);
         this.methodMap = methodMap;
     }
 
@@ -41,7 +43,7 @@ public class ReflectValueAssign extends DynamicValueAssign{
     public Object invokeGetMethod(Object obj, String property) {
         String className = obj.getClass().getName();
         Map<String, Method> methodHandleMap = methodMap.get(className);
-        Method handle = methodHandleMap.get(configSupport.buildSetMethodName(property));
+        Method handle = methodHandleMap.get(configSupport.buildGetMethodName(property));
         try {
             return handle.invoke(obj);
         } catch (Throwable throwable) {

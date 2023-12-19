@@ -1,6 +1,10 @@
 package com.wojucai.util;
 
 import com.wojucai.configuration.scope.ScopeAnalyzeContext;
+import com.wojucai.entity.annotation.PropertyAnnotations;
+import com.wojucai.entity.annotation.ScopeAnnotations;
+import com.wojucai.entity.po.Property;
+import com.wojucai.entity.po.Scope;
 import com.wojucai.entity.po.User;
 import com.wojucai.util.invoker.MethodHandler.MethodHandler;
 import com.wojucai.util.invoker.MethodInvoker;
@@ -13,9 +17,10 @@ import org.junit.jupiter.api.Test;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.lang.reflect.Field;
+import java.util.*;
+
+import static com.wojucai.entity.codeEnum.CacheConstant.SCOPE_CACHE;
 
 /**
  * @description:
@@ -104,13 +109,40 @@ public class TestMethodHandler {
     }
 
     @Test
-    public void testValueAssign() {
-        ScopeAnalyzeContext scopeAnalyzeContext = new ScopeAnalyzeContext();
+    public void testValueAssign() throws ClassNotFoundException {
         // 构造请求列表
         Map<String, Set<String>> propertiesTable = new HashMap<>();
-        System.out.println(User.class.getName());
-//        scopeAnalyzeContext.persistenceScope(,propertiesTable);
-//        ValueAssignFactory valueAssignFactory = new DefaultAssignFactory();
-//        ValueAssign valueAssign = valueAssignFactory.getValueAssign(new MethodHandleConfigSupport(propertiesTable));
+        String className = User.class.getName();
+        Class<?> clazz = Class.forName(className);
+        ScopeAnnotations scopes = clazz.getAnnotation(ScopeAnnotations.class);
+        if (scopes != null) {
+            className = clazz.getName();
+            Field[]fields = clazz.getDeclaredFields();
+            Set<String> propertiesList = new HashSet<>();
+            for (Field field : fields) {
+                if (field.isAnnotationPresent(PropertyAnnotations.class)) {
+                    propertiesList.add(field.getName());
+                }
+            }
+            propertiesTable.put(className, propertiesList);
+        }
+        propertiesTable.forEach(
+                (k, v) ->
+                        System.out.println("key: " + k + "    value:" + v)
+        );
+
+        ValueAssignFactory valueAssignFactory = new DefaultAssignFactory();
+        ValueAssign valueAssign = valueAssignFactory.getValueAssign(new MethodHandleConfigSupport(propertiesTable));
+        User user = new User();
+        user.setSex(1);
+        Object sex = valueAssign.invokeGetMethod(user, "sex");
+        System.out.println("Test invoke get " + sex);
+        valueAssign.invokeSetMethod(user, "username", "123");
+        System.out.println("Test invoke set " + user);
+        List<String> list = new ArrayList<>();
+        list.add("username");
+        valueAssign.assignNullByProperty(user, list);
+        System.out.println(user);
+
     }
 }

@@ -25,17 +25,16 @@ public class MethodHandleConfigSupport extends AbstractConfigSupport  implements
      */
     private final MethodHandles.Lookup lookup = MethodHandles.lookup();
 
-    public MethodHandleConfigSupport(Map<String, Set<String>> getTable) {
-        super(getTable);
+    public MethodHandleConfigSupport(Map<String, Set<String>> propertyTable) {
+        super(propertyTable);
     }
-
 
     @Override
     public ValueAssign buildValueAssign() {
         Map<String, Map<String, MethodHandle>> handleMap = new HashMap<>();
         extract(getMethodTable, handleMap);
         extract(setMethodTable, handleMap);
-        return new MethodHandleValueAssign(getMethodTable, setMethodTable, handleMap);
+        return new MethodHandleValueAssign(getMethodTable, setMethodTable,this, handleMap);
     }
 
     private void extract(Map<String, Set<String>> propertyMap, Map<String, Map<String, MethodHandle>> handleMap) {
@@ -49,12 +48,14 @@ public class MethodHandleConfigSupport extends AbstractConfigSupport  implements
                             String methodName = method.getName();
                             if (methodName.startsWith(GET_PREFIX) && propertySet.contains(methodName)) {
                                 methodHandle = lookup.findVirtual(classObj, methodName, MethodType.methodType(method.getReturnType()));
+                                handleMap.computeIfAbsent(className, map -> new HashMap<>())
+                                        .put(methodName, methodHandle);
                             }
                             if (methodName.startsWith(SET_PREFIX) && propertySet.contains(methodName)) {
                                 methodHandle = lookup.findVirtual(classObj, methodName, MethodType.methodType(void.class, method.getParameterTypes()));
+                                handleMap.computeIfAbsent(className, map -> new HashMap<>())
+                                        .put(methodName, methodHandle);
                             }
-                            handleMap.computeIfAbsent(className, map -> new HashMap<>())
-                                    .put(methodName, methodHandle);
                         }
                     } catch (ClassNotFoundException e) {
                         log.error("class not found {}", className);
@@ -66,6 +67,4 @@ public class MethodHandleConfigSupport extends AbstractConfigSupport  implements
                 }
         );
     }
-
-
 }

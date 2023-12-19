@@ -20,16 +20,16 @@ import java.util.Set;
 @Slf4j
 public class ReflectConfigSupport extends AbstractConfigSupport implements ConfigSupport {
 
-    public ReflectConfigSupport(Map<String, Set<String>> getTable) {
-        super(getTable);
+    public ReflectConfigSupport(Map<String, Set<String>> propertyTable) {
+        super(propertyTable);
     }
 
     @Override
     public ValueAssign buildValueAssign() {
-        Map<String, Map<String, Method>> map = new HashMap<>();
-        extract(getMethodTable, map);
-        extract(setMethodTable, map);
-        return new ReflectValueAssign(getMethodTable, setMethodTable, map);
+        Map<String, Map<String, Method>> methodMap = new HashMap<>();
+        extract(getMethodTable, methodMap);
+        extract(setMethodTable, methodMap);
+        return new ReflectValueAssign(getMethodTable, setMethodTable, this, methodMap);
     }
 
     private void extract(Map<String, Set<String>> propertyMap, Map<String, Map<String, Method>> handleMap) {

@@ -27,9 +27,10 @@ public abstract class DynamicValueAssign implements ValueAssign {
 
     protected ConfigSupport configSupport;
 
-    public DynamicValueAssign(Map<String, Set<String>> getTable, Map<String, Set<String>> setTable) {
+    public DynamicValueAssign(Map<String, Set<String>> getTable, Map<String, Set<String>> setTable, ConfigSupport configSupport) {
         this.getTable = getTable;
         this.setTable = setTable;
+        this.configSupport = configSupport;
     }
 
     /**
