@@ -16,7 +16,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tb_property")
-public class ScopeProperty extends BaseEntity{
+public class Property extends BaseEntity{
 
     /**
      * id

@@ -1,7 +1,7 @@
 package com.wojucai.dao;
 
 import com.wojucai.entity.po.Consent;
-import com.wojucai.entity.po.key.ConsentKey;
+import com.wojucai.entity.Bo.key.ConsentKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;

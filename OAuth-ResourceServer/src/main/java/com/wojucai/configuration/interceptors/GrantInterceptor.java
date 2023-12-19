@@ -4,14 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wojucai.Result;
 import com.wojucai.configuration.context.RoleContext;
 import com.wojucai.configuration.context.UserContext;
-import com.wojucai.entity.po.Authorization;
-import lombok.Data;
+import com.wojucai.entity.Bo.Authorization;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.servlet.HandlerInterceptor;
 

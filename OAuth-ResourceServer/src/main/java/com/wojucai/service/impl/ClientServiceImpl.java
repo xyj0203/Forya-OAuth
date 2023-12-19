@@ -4,14 +4,14 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
 import com.wojucai.dao.ClientRepository;
 import com.wojucai.dao.ConsentRepository;
-import com.wojucai.dao.ScopePropertyRepository;
+import com.wojucai.dao.PropertyRepository;
 import com.wojucai.dao.ScopeRepository;
 import com.wojucai.entity.Bo.ConsentBo;
 import com.wojucai.entity.Bo.ScopeBo;
 import com.wojucai.entity.po.Client;
 import com.wojucai.entity.po.Consent;
 import com.wojucai.entity.po.Scope;
-import com.wojucai.entity.po.ScopeProperty;
+import com.wojucai.entity.po.Property;
 import com.wojucai.entity.reqParam.ClientQuery;
 import com.wojucai.entity.vo.ConsentVo;
 import com.wojucai.entity.vo.ScopeVo;
@@ -50,7 +50,7 @@ public class ClientServiceImpl extends AbstractImpl implements ClientService {
     @Autowired
     private ClientConverter converter;
     @Resource
-    private ScopePropertyRepository scopePropertyRepository;
+    private PropertyRepository propertyRepository;
     @Resource
     private ScopeRepository scopeRepository;
     @Resource
@@ -97,9 +97,9 @@ public class ClientServiceImpl extends AbstractImpl implements ClientService {
         for (Scope scope : all) {
             ScopeVo scopeVo = new ScopeVo();
             BeanUtils.copyProperties(scope, scopeVo);
-            List<ScopeProperty> scopeProperties = scopePropertyRepository.findByClassId(scope.getId());
-            ScopeBo scopeRead = new ScopeBo(scope.getId(), READ, new ArrayList<ScopeProperty>());
-            ScopeBo scopeWrite = new ScopeBo(scope.getId(), WRITE, new ArrayList<ScopeProperty>());
+            List<Property> scopeProperties = propertyRepository.findByClassId(scope.getId());
+            ScopeBo scopeRead = new ScopeBo(scope.getId(), READ, new ArrayList<Property>());
+            ScopeBo scopeWrite = new ScopeBo(scope.getId(), WRITE, new ArrayList<Property>());
             scopeProperties.forEach(scopeProperty -> {
                 scopeProperty.setCreateTime(null);
                 scopeProperty.setUpdateTime(null);
@@ -131,17 +131,17 @@ public class ClientServiceImpl extends AbstractImpl implements ClientService {
         // 找到了对应的关联关系
         Client client = clientRepository.findByClientId(clientId);
         // 对关系进行分类
-        List<ScopeProperty> scopeProperties = scopePropertyRepository.findAllById(client.getScope());
+        List<Property> scopeProperties = propertyRepository.findAllById(client.getScope());
         // 获取对应的类和字段的对应关系
-        Map<Integer, List<ScopeProperty>> scopePropertyMap = scopeProperties.stream()
-                .collect(Collectors.groupingBy(ScopeProperty::getClassId));
+        Map<Integer, List<Property>> scopePropertyMap = scopeProperties.stream()
+                .collect(Collectors.groupingBy(Property::getClassId));
         List<ConsentVo> res = new ArrayList<>(scopePropertyMap.size());
         scopePropertyMap.forEach((key,val)->{
             System.out.println("类Id："+key+" ---属性集： "+val);
             // 获取作用域
             Optional<Scope> optional = scopeRepository.findById(key);
             Scope scope = optional.get();
-            Map<String, List<ScopeProperty>> collect = val.stream().collect(Collectors.groupingBy(ScopeProperty::getDescription));
+            Map<String, List<Property>> collect = val.stream().collect(Collectors.groupingBy(Property::getDescription));
             List<ConsentBo> consentBos = new ArrayList<>(2);
             collect.forEach((description, propertyList) -> {
                 ConsentBo consentBo = new ConsentBo();

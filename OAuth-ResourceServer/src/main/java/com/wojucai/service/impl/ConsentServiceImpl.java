@@ -1,11 +1,10 @@
 package com.wojucai.service.impl;
 
 import com.wojucai.dao.ConsentRepository;
-import com.wojucai.dao.ScopePropertyRepository;
+import com.wojucai.dao.PropertyRepository;
 import com.wojucai.entity.po.Consent;
-import com.wojucai.entity.po.ScopeProperty;
+import com.wojucai.entity.po.Property;
 import com.wojucai.service.ConsentService;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,7 +23,7 @@ public class ConsentServiceImpl implements ConsentService {
     private ConsentRepository consentRepository;
 
     @Resource
-    private ScopePropertyRepository scopePropertyRepository;
+    private PropertyRepository propertyRepository;
 
     @Override
     public Consent save(Consent consent) {
@@ -33,8 +32,8 @@ public class ConsentServiceImpl implements ConsentService {
     }
 
     @Override
-    public List<ScopeProperty> batchQueryProperty(List<Integer> ids) {
-        List<ScopeProperty> allById = scopePropertyRepository.findAllById(ids);
-        return allById == null ? new ArrayList<ScopeProperty>(0) : allById;
+    public List<Property> batchQueryProperty(List<Integer> ids) {
+        List<Property> allById = propertyRepository.findAllById(ids);
+        return allById == null ? new ArrayList<Property>(0) : allById;
     }
 }

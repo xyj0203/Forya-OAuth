@@ -4,14 +4,12 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.wojucai.OAuthClientException;
 import com.wojucai.configuration.context.UserContext;
-import com.wojucai.entity.po.Authorization;
-import com.wojucai.entity.po.ScopeProperty;
+import com.wojucai.entity.Bo.Authorization;
+import com.wojucai.entity.po.Property;
 import com.wojucai.entity.vo.UserVo;
 import com.wojucai.enums.RoleEnum;
 import com.wojucai.service.ConsentService;
-import com.wojucai.util.invoker.MethodHandler.MethodHandler;
 import com.wojucai.util.invoker.MethodInvoker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +50,7 @@ public class UserVoJson extends StdSerializer<UserVo> {
         // 求交集
         range.retainAll(new ArrayList<>(authorizationCode.getScope()));
         // 查询出来的属性信息
-        List<ScopeProperty> scopeProperties = consentService.batchQueryProperty(range);
+        List<Property> scopeProperties = consentService.batchQueryProperty(range);
         UserVo copy = new UserVo();
         copy.setUserId(userVo.getUserId());
         scopeProperties.forEach(

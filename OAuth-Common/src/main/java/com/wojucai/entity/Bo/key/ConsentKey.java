@@ -1,4 +1,4 @@
-package com.wojucai.entity.po.key;
+package com.wojucai.entity.Bo.key;
 
 import lombok.Data;
 

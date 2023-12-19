@@ -2,16 +2,15 @@ package com.wojucai.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
-import com.wojucai.Result;
 import com.wojucai.configuration.context.UserContext;
 import com.wojucai.dao.ConsentRepository;
-import com.wojucai.dao.ScopePropertyRepository;
+import com.wojucai.dao.PropertyRepository;
 import com.wojucai.dao.UserRepository;
+import com.wojucai.entity.Bo.Authorization;
 import com.wojucai.entity.po.*;
 import com.wojucai.entity.reqParam.UserQuery;
 import com.wojucai.entity.vo.UserVo;
 import com.wojucai.service.UserService;
-import com.wojucai.util.TimeUtil;
 import com.wojucai.util.converter.UserConverter;
 import com.wojucai.util.invoker.MethodInvoker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +45,7 @@ public class UserServiceImpl extends AbstractImpl implements UserService {
     @Resource
     private RedisTemplate redisTemplate;
     @Resource
-    private ScopePropertyRepository scopePropertyRepository;
+    private PropertyRepository propertyRepository;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -144,7 +143,7 @@ public class UserServiceImpl extends AbstractImpl implements UserService {
         // 求交集
         range.retainAll(new ArrayList<>(authorization.getScope()));
         // 查询出来的属性信息
-        List<ScopeProperty> scopeProperties = scopePropertyRepository.findAllById(range);
+        List<Property> scopeProperties = propertyRepository.findAllById(range);
         User copy = userRepository.findById(user.getUserId()).get();
         // 公共属性
         scopeProperties.forEach(

@@ -1,8 +1,6 @@
 package com.wojucai;
 
 import cn.hutool.core.net.url.UrlBuilder;
-import cn.hutool.core.util.URLUtil;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.google.gson.Gson;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSVerifier;
@@ -15,12 +13,9 @@ import com.nimbusds.jwt.SignedJWT;
 import com.wojucai.bean.metadata.OAuthService;
 import com.wojucai.bean.metadata.ServerMetadata;
 import com.wojucai.bean.metadata.TokenResponse;
-import com.wojucai.entity.po.Authorization;
-import com.wojucai.entity.po.AuthorizationCode;
-import com.wojucai.json.GsonDecoder;
+import com.wojucai.entity.Bo.Authorization;
 import com.wojucai.util.TextUtils;
 import feign.Feign;
-import org.apache.hc.core5.net.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.net.URISyntaxException;

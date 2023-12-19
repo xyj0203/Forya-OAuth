@@ -5,7 +5,7 @@ import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import com.wojucai.entity.AccessTokenResponse;
-import com.wojucai.entity.po.AuthorizationCode;
+import com.wojucai.entity.Bo.AuthorizationCode;
 import com.wojucai.entity.KeyStore;
 import com.wojucai.entity.ServerMetadata;
 import org.springframework.stereotype.Service;
@@ -90,7 +90,7 @@ public class TokenService {
                     .tokenType("bearer")
                     .refreshToken(refreshJWT.serialize())
                     .expiresIn(expiresIn.getSeconds())
-                    .scope(authorizationCode.getScope().toString())
+//                    .scope(authorizationCode.getScope().toString())
                     .build();
         } catch (JOSEException e) {
             e.printStackTrace();

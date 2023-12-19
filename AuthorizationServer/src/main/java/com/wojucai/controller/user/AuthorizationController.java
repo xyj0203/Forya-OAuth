@@ -5,7 +5,7 @@ package com.wojucai.controller.user;
 import cn.hutool.core.net.url.UrlBuilder;
 import com.wojucai.Result;
 import com.wojucai.entity.AccessTokenResponse;
-import com.wojucai.entity.po.AuthorizationCode;
+import com.wojucai.entity.Bo.AuthorizationCode;
 import com.wojucai.entity.OnlineState;
 import com.wojucai.entity.po.Consent;
 import com.wojucai.service.ClientService;

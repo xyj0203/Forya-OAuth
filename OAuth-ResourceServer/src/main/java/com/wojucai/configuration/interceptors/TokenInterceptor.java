@@ -5,19 +5,16 @@ import com.wojucai.OAuth2Client;
 import com.wojucai.Result;
 import com.wojucai.configuration.context.UserContext;
 import com.wojucai.entity.codeEnum.CacheConstant;
-import com.wojucai.entity.po.Authorization;
+import com.wojucai.entity.Bo.Authorization;
 import com.wojucai.enums.RoleEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @description: 拦截处理Token
@@ -41,13 +38,24 @@ public class TokenInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader("token");
-        if (getIpAddress(request).equals("127.0.0.1") && token == null) {
+        log.info("token:user token is {}", token);
+//        if (getIpAddress(request).equals("127.0.0.1") && token == null) {
+//            Authorization authorization = new Authorization();
+//            authorization.setRole(RoleEnum.ROLE_ADMIN.getRole());
+//            UserContext.setAuthorizationCode(authorization);
+//            log.info("我是管理员用户");
+//            return true;
+//        }
+
+        // 测试代码，上面的才是正确代码
+       if (token == null) {
             Authorization authorization = new Authorization();
             authorization.setRole(RoleEnum.ROLE_ADMIN.getRole());
             UserContext.setAuthorizationCode(authorization);
             log.info("我是管理员用户");
             return true;
         }
+
         // 校验token是否为空
         if (token == null) {
             log.info("token为空");

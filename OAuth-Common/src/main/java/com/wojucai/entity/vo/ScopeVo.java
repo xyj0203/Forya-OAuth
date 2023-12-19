@@ -1,12 +1,7 @@
 package com.wojucai.entity.vo;
 
 import com.wojucai.entity.Bo.ScopeBo;
-import com.wojucai.entity.po.ScopeProperty;
 import lombok.Data;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import java.util.List;
 
 /**
  * @description: ScopeVo对象

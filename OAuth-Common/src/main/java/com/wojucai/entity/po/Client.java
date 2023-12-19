@@ -60,7 +60,6 @@ public class Client extends BaseEntity{
     /**
      * 认证成功重定向链接
      */
-    @URL(message = "重定向链接不合法")
     @NotBlank(message = "重定向链接不能为空", groups = {Default.class})
     private String redirectUrl;
 

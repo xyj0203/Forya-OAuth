@@ -1,15 +1,11 @@
 package com.wojucai.service;
 
-import com.wojucai.Result;
 import com.wojucai.entity.po.Client;
-import com.wojucai.entity.po.Scope;
-import com.wojucai.entity.po.ScopeProperty;
 import com.wojucai.entity.reqParam.ClientQuery;
 import com.wojucai.entity.vo.ClientVo;
 import com.wojucai.entity.vo.ConsentVo;
 import com.wojucai.entity.vo.ScopeVo;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 

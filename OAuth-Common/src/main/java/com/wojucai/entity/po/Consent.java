@@ -1,6 +1,6 @@
 package com.wojucai.entity.po;
 
-import com.wojucai.entity.po.key.ConsentKey;
+import com.wojucai.entity.Bo.key.ConsentKey;
 import com.wojucai.utils.conveter.JpaConverterListJson;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,8 +33,6 @@ public class Consent implements Serializable {
      */
     @Convert(converter = JpaConverterListJson.class)
     private List<Integer> scope;
-
-
 }
 
 

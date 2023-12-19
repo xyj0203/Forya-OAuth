@@ -1,13 +1,21 @@
 package com.wojucai.util;
 
+import com.wojucai.configuration.scope.ScopeAnalyzeContext;
 import com.wojucai.entity.po.User;
 import com.wojucai.util.invoker.MethodHandler.MethodHandler;
 import com.wojucai.util.invoker.MethodInvoker;
+import com.wojucai.util.invoker.assign.ValueAssign;
+import com.wojucai.util.invoker.factory.DefaultAssignFactory;
+import com.wojucai.util.invoker.factory.ValueAssignFactory;
+import com.wojucai.util.invoker.support.MethodHandleConfigSupport;
 import org.junit.jupiter.api.Test;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @description:
@@ -93,5 +101,16 @@ public class TestMethodHandler {
             return str;
         }
         return Character.toUpperCase(str.charAt(0)) + str.substring(1);
+    }
+
+    @Test
+    public void testValueAssign() {
+        ScopeAnalyzeContext scopeAnalyzeContext = new ScopeAnalyzeContext();
+        // 构造请求列表
+        Map<String, Set<String>> propertiesTable = new HashMap<>();
+        System.out.println(User.class.getName());
+//        scopeAnalyzeContext.persistenceScope(,propertiesTable);
+//        ValueAssignFactory valueAssignFactory = new DefaultAssignFactory();
+//        ValueAssign valueAssign = valueAssignFactory.getValueAssign(new MethodHandleConfigSupport(propertiesTable));
     }
 }

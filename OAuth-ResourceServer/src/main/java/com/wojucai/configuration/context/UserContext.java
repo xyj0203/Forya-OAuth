@@ -1,6 +1,6 @@
 package com.wojucai.configuration.context;
 
-import com.wojucai.entity.po.Authorization;
+import com.wojucai.entity.Bo.Authorization;
 
 /**
  * @description: 记录用户的上下文对象

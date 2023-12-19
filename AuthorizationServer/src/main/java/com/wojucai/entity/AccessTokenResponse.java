@@ -15,5 +15,5 @@ public class AccessTokenResponse {
     private String tokenType;
     private Long expiresIn;
     private String refreshToken;
-    private String scope;
+//    private String scope;
 }

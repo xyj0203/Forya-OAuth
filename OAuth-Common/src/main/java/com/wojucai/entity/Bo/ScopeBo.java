@@ -1,15 +1,10 @@
 package com.wojucai.entity.Bo;
 
-import com.wojucai.entity.po.ScopeProperty;
+import com.wojucai.entity.po.Property;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
 import java.util.List;
-
-import static com.wojucai.entity.codeEnum.ParamConstants.READ;
 
 /**
  * @description:
@@ -33,5 +28,5 @@ public class ScopeBo {
     /**
      * 字段列表
      */
-    private List<ScopeProperty> scopeList;
+    private List<Property> scopeList;
 }

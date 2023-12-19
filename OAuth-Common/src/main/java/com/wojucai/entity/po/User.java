@@ -6,7 +6,6 @@ import com.wojucai.entity.annotation.PropertyAnnotations;
 import com.wojucai.entity.validate.Default;
 import com.wojucai.entity.validate.Update;
 import lombok.*;
-import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 
