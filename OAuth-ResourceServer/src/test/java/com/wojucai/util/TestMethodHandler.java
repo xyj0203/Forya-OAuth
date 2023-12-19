@@ -12,6 +12,7 @@ import com.wojucai.util.invoker.assign.ValueAssign;
 import com.wojucai.util.invoker.factory.DefaultAssignFactory;
 import com.wojucai.util.invoker.factory.ValueAssignFactory;
 import com.wojucai.util.invoker.support.MethodHandleConfigSupport;
+import com.wojucai.util.invoker.support.ReflectConfigSupport;
 import org.junit.jupiter.api.Test;
 
 import java.lang.invoke.MethodHandle;
@@ -143,6 +144,42 @@ public class TestMethodHandler {
         list.add("username");
         valueAssign.assignNullByProperty(user, list);
         System.out.println(user);
+    }
 
+    @Test
+    public void testValueAssignByReflect() throws ClassNotFoundException {
+        // 构造请求列表
+        Map<String, Set<String>> propertiesTable = new HashMap<>();
+        String className = User.class.getName();
+        Class<?> clazz = Class.forName(className);
+        ScopeAnnotations scopes = clazz.getAnnotation(ScopeAnnotations.class);
+        if (scopes != null) {
+            className = clazz.getName();
+            Field[]fields = clazz.getDeclaredFields();
+            Set<String> propertiesList = new HashSet<>();
+            for (Field field : fields) {
+                if (field.isAnnotationPresent(PropertyAnnotations.class)) {
+                    propertiesList.add(field.getName());
+                }
+            }
+            propertiesTable.put(className, propertiesList);
+        }
+        propertiesTable.forEach(
+                (k, v) ->
+                        System.out.println("key: " + k + "    value:" + v)
+        );
+
+        ValueAssignFactory valueAssignFactory = new DefaultAssignFactory();
+        ValueAssign valueAssign = valueAssignFactory.getValueAssign(new ReflectConfigSupport(propertiesTable));
+        User user = new User();
+        user.setSex(1);
+        Object sex = valueAssign.invokeGetMethod(user, "sex");
+        System.out.println("Test invoke get " + sex);
+        valueAssign.invokeSetMethod(user, "username", "123");
+        System.out.println("Test invoke set " + user);
+        List<String> list = new ArrayList<>();
+        list.add("username");
+        valueAssign.assignNullByProperty(user, list);
+        System.out.println(user);
     }
 }

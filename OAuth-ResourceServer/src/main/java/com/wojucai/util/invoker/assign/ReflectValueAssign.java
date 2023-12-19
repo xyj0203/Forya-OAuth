@@ -33,7 +33,7 @@ public class ReflectValueAssign extends DynamicValueAssign{
         Map<String, Method> methodHandleMap = methodMap.get(className);
         Method handle = methodHandleMap.get(configSupport.buildSetMethodName(property));
         try {
-            handle.invoke(obj);
+            handle.invoke(obj, params[0]);
         } catch (Throwable throwable) {
             throw new MethodExecuteException("method execute exception, please check if method exist!");
         }
