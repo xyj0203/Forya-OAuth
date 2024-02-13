@@ -25,6 +25,11 @@
             <version>30.1-jre</version>
         </dependency>
         <dependency>
+            <groupId>com.netflix.concurrency-limits</groupId>
+            <artifactId>concurrency-limits-servlet</artifactId>
+            <version>0.4.1</version>
+        </dependency>
+        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>

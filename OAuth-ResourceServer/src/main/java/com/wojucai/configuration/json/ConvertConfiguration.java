@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.wojucai.core.UserVoJson;
+import com.wojucai.core.json.UserVoJson;
 import com.wojucai.entity.vo.UserVo;
 import com.wojucai.service.ConsentService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.wojucai.core;
+package com.wojucai.core.auth;
 
 /**
  * @description:
