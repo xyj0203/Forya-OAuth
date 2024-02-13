@@ -1,4 +1,4 @@
-package com.wojucai.core;
+package com.wojucai.core.json;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
